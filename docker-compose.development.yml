@@ -1,0 +1,57 @@
+version: '3'
+services:
+  student_server:
+    build:
+      context: ./server
+    image: student_server
+    restart: always
+    ports:
+      - "40081:40081"
+    env_file:
+      - ./server/secret/local.env
+    volumes:
+      - ./server/secret/:/etc/gcp/
+      - ./server/laravel/:/var/www/html/:rw
+    command: ["php", "-S", "0.0.0.0:40081", "-t", "public/"]
+    depends_on:
+      - cloudsql
+    networks:
+      - default
+      - ddl_default
+
+  student_client:
+    build:
+      context: ./client
+    image: student_client
+    restart: always
+    ports:
+      - "28082:28082"
+    volumes:
+      - ./client/src:/app/src:rw
+      - ./client/dist:/app/dist:rw
+      - ./client/__tests__:/app/__tests__:rw
+      - ./client/.eslintrc.json:/app/eslintrc.json:rw
+      - ./client/.prettierrc:/app/.prettierrc:rw
+      - ./client/package.json:/app/package.json:rw
+      - ./client/yarn.lock:/app/yarn.lock:rw
+      - ./client/tsconfig.json:/app/tsconfig.json:rw
+      - ./client/webpack.config.js:/app/webpack.config.js:rw
+    command: [debug]
+
+  cloudsql:
+    restart: always
+    image: mysql:5.7
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+    volumes:
+      - db-data:/var/lib/mysql
+    environment:
+      - "MYSQL_ROOT_PASSWORD=root"
+      - "MYSQL_DATABASE=thinh"
+    ports:
+      - "33070"
+  volumes:
+    db-data:
+
+  networks:
+    ddl_default:
+      external: true
