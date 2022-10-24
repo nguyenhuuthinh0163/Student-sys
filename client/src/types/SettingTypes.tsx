@@ -1,6 +1,5 @@
-const Profile: string = 'Students';
-const Account: string = 'Faculties';
-const Dashboard: string = 'Majors';
-const Logout: string = 'Majors';
+const Profile: string = 'Profile';
+const Accounts: string = 'Accounts';
+const Logout: string = 'Logout';
 
-export { Profile, Account, Dashboard, Logout };
+export { Profile, Accounts, Logout };

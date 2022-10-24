@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { NavLink } from "react-router-dom";
+import { NavLink } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,16 +12,17 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
-import { Students, Faculties, Majors } from '../../types/MenuTypes';
-import { Profile, Account, Dashboard, Logout } from '../../types/SettingTypes';
-import { LinkStudentList, LinkFacultyList, LinkMajorList } from "../../Routes";
+import {
+  pageInterface,
+  LinkStudentList,
+  LinkFacultyList,
+  LinkMajorList,
+  Profile,
+  Logout,
+} from '../../Routes';
 
-const pages = {
-  [Students]: LinkStudentList,
-  [Faculties]: LinkFacultyList,
-  [Majors]: LinkMajorList
-};
-const settings = [Profile, Account, Dashboard, Logout];
+const pages: Array<pageInterface> = [LinkStudentList, LinkFacultyList, LinkMajorList];
+const settings: Array<pageInterface> = [Profile, Logout];
 
 const Header = () => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -35,7 +36,7 @@ const Header = () => {
   };
 
   return (
-    <div>
+    <div style={{ width: '100%' }}>
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
@@ -77,14 +78,9 @@ const Header = () => {
               LOGO
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {Object.keys(pages).map((page) => (
-                <Button
-                  key={page}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
-                >
-                  <NavLink to={pages[page]}>
-                    {page}
-                  </NavLink>
+              {pages.map((page) => (
+                <Button key={page.name} sx={{ my: 2, color: 'white', display: 'block' }}>
+                  <NavLink to={page.route}>{page.name}</NavLink>
                 </Button>
               ))}
             </Box>
@@ -112,8 +108,8 @@ const Header = () => {
                 onClose={handleCloseUserMenu}
               >
                 {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">{setting}</Typography>
+                  <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting.name}</Typography>
                   </MenuItem>
                 ))}
               </Menu>

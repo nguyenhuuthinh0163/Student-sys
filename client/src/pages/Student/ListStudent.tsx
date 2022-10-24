@@ -1,59 +1,24 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
+import { alpha, styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import { TableRow, TableCell, tableCellClasses } from '@mui/material';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
 import TableSortLabel from '@mui/material/TableSortLabel';
 import Toolbar from '@mui/material/Toolbar';
-import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
-
-interface Data {
-  calories: number;
-  carbs: number;
-  fat: number;
-  name: string;
-  protein: number;
-}
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-): Data {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-  };
-}
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
@@ -65,20 +30,52 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+interface Data {
+  [key: string | number]: string | number;
+  t_student_id: number;
+  t_student_name: string;
+  t_major_name: string;
+  t_faculty_name: string;
+  t_student_birthday: string;
+  t_student_gender: string;
+  t_student_address: string;
+  t_student_phone_number: string;
+}
+
+function createData(
+  t_student_id: number,
+  t_student_name: string,
+  t_major_name: string,
+  t_faculty_name: string,
+  t_student_birthday: string,
+  t_student_gender: string,
+  t_student_address: string,
+  t_student_phone_number: string
+): Data {
+  return {
+    t_student_id,
+    t_student_name,
+    t_major_name,
+    t_faculty_name,
+    t_student_birthday,
+    t_student_gender,
+    t_student_address,
+    t_student_phone_number,
+  };
+}
+
 const rows = [
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Donut', 452, 25.0, 51, 4.9),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Honeycomb', 408, 3.2, 87, 6.5),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Jelly Bean', 375, 0.0, 94, 0.0),
-  createData('KitKat', 518, 26.0, 65, 7.0),
-  createData('Lollipop', 392, 0.2, 98, 0.0),
-  createData('Marshmallow', 318, 0, 81, 2.0),
-  createData('Nougat', 360, 19.0, 9, 37.0),
-  createData('Oreo', 437, 18.0, 63, 4.0),
+  createData(1, 'Thinh', 'Software Engineer', 'Information Technology', '06/07/1996', 'Male', '6/1 Pham Van Nghi, Tp Da Nang', '+84335492537'),
+  createData(2, 'Thang', 'Software Engineer', 'Information Technology', '06/07/1996', 'Male', '6/1 Pham Van Nghi, Tp Da Nang', '+84335492537'),
+  createData(3, 'Hiep', 'Software Engineer', 'Information Technology', '06/07/1996', 'Male', '6/1 Pham Van Nghi, Tp Da Nang', '+84335492537'),
+  createData(4, 'Minh', 'Software Engineer', 'Information Technology', '06/07/1996', 'Male', '6/1 Pham Van Nghi, Tp Da Nang', '+84335492537'),
+  createData(5, 'Can', 'Software Engineer', 'Information Technology', '06/07/1996', 'Male', '6/1 Pham Van Nghi, Tp Da Nang', '+84335492537'),
+  createData(6, 'Trinh', 'Software Engineer', 'Information Technology', '06/07/1996', 'Male', '6/1 Pham Van Nghi, Tp Da Nang', '+84335492537'),
+  createData(7, 'Tu', 'Software Engineer', 'Information Technology', '06/07/1996', 'Male', '6/1 Pham Van Nghi, Tp Da Nang', '+84335492537'),
+  createData(11, 'Huy', 'Software Engineer', 'Information Technology', '06/07/1996', 'Male', '6/1 Pham Van Nghi, Tp Da Nang', '+84335492537'),
+  createData(23, 'Viet', 'Software Engineer', 'Information Technology', '06/07/1996', 'Male', '6/1 Pham Van Nghi, Tp Da Nang', '+84335492537'),
+  createData(25, 'Kim', 'Software Engineer', 'Information Technology', '06/07/1996', 'Male', '6/1 Pham Van Nghi, Tp Da Nang', '+84335492537'),
+  createData(30, 'Nguyen', 'Software Engineer', 'Information Technology', '06/07/1996', 'Male', '6/1 Pham Van Nghi, Tp Da Nang', '+84335492537')
 ];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -123,36 +120,55 @@ interface HeadCell {
   numeric: boolean;
 }
 
+// Define Table header
 const headCells: readonly HeadCell[] = [
   {
-    id: 'name',
-    numeric: false,
+    id: 't_student_id',
+    numeric: true,
     disablePadding: true,
-    label: 'Dessert (100g serving)',
+    label: 'ID',
   },
   {
-    id: 'calories',
-    numeric: true,
+    id: 't_student_name',
+    numeric: false,
     disablePadding: false,
-    label: 'Calories',
+    label: 'Student name',
   },
   {
-    id: 'fat',
-    numeric: true,
+    id: 't_major_name',
+    numeric: false,
     disablePadding: false,
-    label: 'Fat (g)',
+    label: 'Major',
   },
   {
-    id: 'carbs',
-    numeric: true,
+    id: 't_faculty_name',
+    numeric: false,
     disablePadding: false,
-    label: 'Carbs (g)',
+    label: 'Faculty',
   },
   {
-    id: 'protein',
+    id: 't_student_birthday',
+    numeric: false,
+    disablePadding: false,
+    label: 'Date of birth',
+  },
+  {
+    id: 't_student_gender',
+    numeric: false,
+    disablePadding: false,
+    label: 'Gender',
+  },
+  {
+    id: 't_student_address',
+    numeric: false,
+    disablePadding: false,
+    label: 'Address',
+  },
+  {
+    id: 't_student_phone_number',
     numeric: true,
     disablePadding: false,
-    label: 'Protein (g)',
+    label: 'Phone',
   },
 ];
 
@@ -161,7 +177,7 @@ interface EnhancedTableProps {
   onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
-  orderBy: string;
+  orderBy: keyof Data;
   rowCount: number;
 }
 
@@ -174,7 +190,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
   return (
     <TableHead>
       <TableRow>
-        <StyledTableCell padding="checkbox">
+        <TableCell padding="checkbox">
           <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
@@ -184,9 +200,9 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               'aria-label': 'select all desserts',
             }}
           />
-        </StyledTableCell>
+        </TableCell>
         {headCells.map((headCell) => (
-          <StyledTableCell
+          <TableCell
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
             padding={headCell.disablePadding ? 'none' : 'normal'}
@@ -204,7 +220,7 @@ function EnhancedTableHead(props: EnhancedTableProps) {
                 </Box>
               ) : null}
             </TableSortLabel>
-          </StyledTableCell>
+          </TableCell>
         ))}
       </TableRow>
     </TableHead>
@@ -219,47 +235,45 @@ const EnhancedTableToolbar = (props: EnhancedTableToolbarProps) => {
   const { numSelected } = props;
 
   return (
-    <div>
-      <Toolbar
-        sx={{
-          pl: { sm: 2 },
-          pr: { xs: 1, sm: 1 },
-          ...(numSelected > 0 && {
-            bgcolor: (theme) =>
-              alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
-          }),
-        }}
-      >
-        {numSelected > 0 ? (
-          <Typography sx={{ flex: '1 1 100%' }} color="inherit" variant="subtitle1" component="div">
-            {numSelected} selected
-          </Typography>
-        ) : (
-          <Typography sx={{ flex: '1 1 100%' }} variant="h6" id="tableTitle" component="div">
-            Nutrition
-          </Typography>
-        )}
-        {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <Tooltip title="Filter list">
-            <IconButton>
-              <FilterListIcon />
-            </IconButton>
-          </Tooltip>
-        )}
-      </Toolbar>
-    </div>
+    <Toolbar
+      sx={{
+        pl: { sm: 2 },
+        pr: { xs: 1, sm: 1 },
+        ...(numSelected > 0 && {
+          bgcolor: (theme) =>
+            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+        }),
+      }}
+    >
+      {numSelected > 0 ? (
+        <Typography sx={{ flex: '1 1 100%' }} color="inherit" variant="subtitle1" component="div">
+          {numSelected} selected
+        </Typography>
+      ) : (
+        <Typography sx={{ flex: '1 1 100%' }} variant="h6" id="tableTitle" component="div">
+          Nutrition
+        </Typography>
+      )}
+      {numSelected > 0 ? (
+        <Tooltip title="Delete">
+          <IconButton>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
+      ) : (
+        <Tooltip title="Filter list">
+          <IconButton>
+            <FilterListIcon />
+          </IconButton>
+        </Tooltip>
+      )}
+    </Toolbar>
   );
-};
+}
 
-export default function ListStudent() {
+function ListStudent() {
   const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
+  const [orderBy, setOrderBy] = React.useState<keyof Data>('t_studennt_id');
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -273,19 +287,19 @@ export default function ListStudent() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.name);
+      const newSelected = rows.map((n) => n.t_student_name);
       setSelected(newSelected);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event: React.MouseEvent<unknown>, name: string | number) => {
+    const selectedIndex = selected.indexOf(name.toString());
     let newSelected: readonly string[] = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, name.toString());
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -313,7 +327,7 @@ export default function ListStudent() {
     setDense(event.target.checked);
   };
 
-  const isSelected = (name: string) => selected.indexOf(name) !== -1;
+  const isSelected = (name: string | number) => selected.indexOf(name.toString()) !== -1;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -342,13 +356,13 @@ export default function ListStudent() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.t_student_name);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <StyledTableRow
                       hover
-                      onClick={(event) => handleClick(event, row.name)}
+                      onClick={(event) => handleClick(event, row.t_student_name)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
@@ -364,13 +378,16 @@ export default function ListStudent() {
                           }}
                         />
                       </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.name}
+                      <TableCell component="th" align="right" id={labelId} scope="row" padding="none">
+                        {row.t_student_id}
                       </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
+                      <TableCell align="left">{row.t_student_name}</TableCell>
+                      <TableCell align="left">{row.t_major_name}</TableCell>
+                      <TableCell align="left">{row.t_faculty_name}</TableCell>
+                      <TableCell align="left">{row.t_student_birthday}</TableCell>
+                      <TableCell align="left">{row.t_student_gender}</TableCell>
+                      <TableCell align="left">{row.t_student_address}</TableCell>
+                      <TableCell align="left">{row.t_student_phone_number}</TableCell>
                     </StyledTableRow>
                   );
                 })}
@@ -403,3 +420,5 @@ export default function ListStudent() {
     </Box>
   );
 }
+
+export default ListStudent;
