@@ -19,6 +19,8 @@ import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
+import axios from 'axios';
+import { useEffect } from 'react';
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
@@ -278,6 +280,19 @@ function ListStudent() {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [lisData, setListData] = React.useState([]);
+
+  useEffect(function(){
+    axios({
+      method: 'GET',
+      url: 'http://localhost:8000/api/students/',
+      timeout: 10000,
+    })
+    .then(response => {
+      console.log(response);
+    })
+    .catch(error => console.error('timeout exceeded'))
+  }, [])
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && order === 'asc';

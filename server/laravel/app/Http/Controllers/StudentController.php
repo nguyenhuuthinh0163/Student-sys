@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
+use App\Service\StudentService;
 
 class StudentController extends Controller
 {
@@ -11,6 +11,7 @@ class StudentController extends Controller
      */
     public function list()
     {
-        return Student::all();
+        $student = new StudentService();
+        return $student->getList();
     }
 }

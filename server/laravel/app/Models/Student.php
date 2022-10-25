@@ -34,6 +34,7 @@ class Student extends Model
         self::T_STUDENT_ADDRESS,
         self::T_STUDENT_PHONE_NUMBER,
         self::T_STUDENT_IMAGE_URL,
+        self::DELETED_AT,
         self::CREATED_ID,
         self::CREATED_DATETIME,
         self::UPDATED_ID,
