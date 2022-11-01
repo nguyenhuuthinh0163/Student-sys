@@ -26,6 +26,7 @@ const settings: Array<pageInterface> = [Profile, Logout];
 
 const Header = () => {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [activeMenu, setActiveMenu] = useState<string>('');
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -35,8 +36,12 @@ const Header = () => {
     setAnchorElUser(null);
   };
 
+  const handleClickMenu = (name: string) => {
+    setActiveMenu(name);
+  };
+
   return (
-    <div style={{ width: '100%' }}>
+    <>
       <AppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
@@ -79,9 +84,27 @@ const Header = () => {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page) => (
-                <Button key={page.name} sx={{ my: 2, color: 'white', display: 'block' }}>
-                  <NavLink to={page.route}>{page.name}</NavLink>
-                </Button>
+                <NavLink
+                  to={page.route}
+                  key={page.name}
+                  style={{
+                    textDecoration: 'none',
+                    borderBottom: page.name === activeMenu ? '2px inset white' : '',
+                    backgroundColor: page.name === activeMenu ? 'dodgerblue' : '',
+                  }}
+                  onClick={() => handleClickMenu(page.name)}
+                >
+                  <Button
+                    key={page.name}
+                    sx={{
+                      my: 2,
+                      color: 'white',
+                      display: 'block',
+                    }}
+                  >
+                    {page.name}
+                  </Button>
+                </NavLink>
               ))}
             </Box>
 
@@ -117,7 +140,8 @@ const Header = () => {
           </Toolbar>
         </Container>
       </AppBar>
-    </div>
+    </>
   );
 };
+
 export default Header;
