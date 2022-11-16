@@ -19,3 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('students', 'App\Http\Controllers\StudentController@list');
+Route::get('majors', 'App\Http\Controllers\MajorController@list');
+Route::get('faculties', 'App\Http\Controllers\FacultyController@list');

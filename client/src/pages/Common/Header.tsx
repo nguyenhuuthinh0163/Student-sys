@@ -20,6 +20,7 @@ import {
   Profile,
   Logout,
 } from '../../Routes';
+import { styled } from '@mui/material/styles';
 
 const pages: Array<pageInterface> = [LinkStudentList, LinkFacultyList, LinkMajorList];
 const settings: Array<pageInterface> = [Profile, Logout];
@@ -42,7 +43,7 @@ const Header = () => {
 
   return (
     <>
-      <AppBar position="static">
+      <StyledAppBar position="static">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -90,7 +91,7 @@ const Header = () => {
                   style={{
                     textDecoration: 'none',
                     borderBottom: page.name === activeMenu ? '2px inset white' : '',
-                    backgroundColor: page.name === activeMenu ? 'dodgerblue' : '',
+                    backgroundColor: page.name === activeMenu ? '#AEBDCA' : '',
                   }}
                   onClick={() => handleClickMenu(page.name)}
                 >
@@ -139,9 +140,15 @@ const Header = () => {
             </Box>
           </Toolbar>
         </Container>
-      </AppBar>
+      </StyledAppBar>
     </>
   );
 };
+
+const StyledAppBar = styled(AppBar)(() => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: '#7895B2',
+  },
+}));
 
 export default Header;
