@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { alpha, styled } from '@mui/material/styles';
-import { TableRow, TableCell, Box, Typography } from '@mui/material';
+import { TableRow, TableCell, Box, Typography, Button } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
 import Student from '../../Interfaces/Student';
@@ -14,6 +14,8 @@ import { Order } from '../../Types/Order';
 import { stableSort, getComparator } from '../../Utils/ListHelper';
 import EditStudentModal from './EditStudentModal';
 import EnhancedTableToolbar from '../Common/EnhancedTableToolbar';
+import { getFaculties } from '../../redux/facultySlice';
+import Faculty from '../../Interfaces/Faculty';
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
@@ -86,10 +88,22 @@ function ListStudent() {
   const tablePagination = { order, orderBy, selected, page, rowsPerPage };
   const [listData, setListData] = React.useState<Array<Student>>([]);
   const [openEditMoal, setOpenEditMoal] = React.useState(false);
+  const [faculties, setFaculties] = React.useState<Array<Faculty>>([]);
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - listData.length) : 0;
 
   const handleClickEvent = (event: React.MouseEvent<unknown>, name: string | number) => {
     myRef.current?.handleClick(event, name);
+  };
+
+  const handleClickAdd = () => {
+    setOpenEditMoal(true);
+    getDataFaculties();
+  };
+
+  const getDataFaculties = async () => {
+    const result = await dispatch(getFaculties());
+    const listFaculty = unwrapResult(result);
+    setFaculties(listFaculty);
   };
 
   useEffect(
@@ -131,7 +145,15 @@ function ListStudent() {
           Student list
         </Typography>
         {selected.length > 0 ? <EnhancedTableToolbar numSelected={selected.length} /> : ''}
-        <EditStudentModal openEditMoal={openEditMoal} setOpenEditMoal={setOpenEditMoal} />
+        <Button variant="outlined" onClick={handleClickAdd}>
+          Create new Student
+        </Button>
+        <EditStudentModal
+          isEdit={false}
+          openEditMoal={openEditMoal}
+          setOpenEditMoal={setOpenEditMoal}
+          faculties={faculties}
+        />
       </Box>
       <List
         ref={myRef}

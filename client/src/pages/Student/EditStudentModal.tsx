@@ -7,24 +7,38 @@ import {
   DialogActions,
   FormControl,
   InputLabel,
-  NativeSelect,
   MenuItem,
   Select,
 } from '@mui/material';
-import { useState } from 'react';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import Faculty from '../../Interfaces/Faculty';
+import Student from '../../Interfaces/Student';
+import { getFaculties } from '../../redux/facultySlice';
 
 interface EditStudentModalProps {
   openEditMoal: boolean;
   setOpenEditMoal: (property: boolean) => void;
+  isEdit: boolean;
+  student?: Student;
+  faculties?: Faculty[];
 }
 
-function EditStudentModal({ openEditMoal, setOpenEditMoal }: EditStudentModalProps) {
-  const [isEdit, setIsEdit] = useState<boolean>(false);
-  // t_student_name, t_major_name, t_faculty_name, t_student_birthday, t_student_gender, t_student_address, t_student_phone_number
-  const handleClickOpen = () => {
-    setOpenEditMoal(true);
-  };
+function EditStudentModal({
+  openEditMoal,
+  setOpenEditMoal,
+  isEdit,
+  student,
+  faculties,
+}: EditStudentModalProps) {
+  const dispatch = useDispatch();
+  // const [statusDialog, setStatusDialog] = useState<boolean>(false);
+  // const [faculties, setFaculties] = useState<Array<Faculty>>([]);
+  // const [studentForm, setStudentForm] = useState<Partial<Student>>({});
+  console.log(faculties);
 
+  // t_student_name, t_major_name, t_faculty_name, t_student_birthday, t_student_gender, t_student_address, t_student_phone_number
   const handleClose = () => {
     setOpenEditMoal(false);
   };
@@ -33,11 +47,20 @@ function EditStudentModal({ openEditMoal, setOpenEditMoal }: EditStudentModalPro
     setOpenEditMoal(false);
   };
 
+  useEffect(
+    function () {
+      // const getDataFaculties = async () => {
+      //   const result = await dispatch(getFaculties());
+      //   const listFaculty = unwrapResult(result);
+      //   setFaculties(listFaculty);
+      // };
+      // getDataFaculties();
+    },
+    [faculties]
+  );
+
   return (
     <>
-      <Button variant="outlined" onClick={handleClickOpen}>
-        Create new Student
-      </Button>
       <Dialog open={openEditMoal} onClose={handleClose}>
         <DialogTitle>{!isEdit ? 'Create new student' : 'Edit student'}</DialogTitle>
         <DialogContent>
