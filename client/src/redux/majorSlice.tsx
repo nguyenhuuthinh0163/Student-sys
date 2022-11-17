@@ -2,10 +2,13 @@ import majorApi from '../api/majorApi';
 
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
-export const getMajors = createAsyncThunk('major/getMajors', async (param: any, thunkAPI: any) => {
-  const result = await majorApi.getMajors();
-  return result;
-});
+export const getMajors = createAsyncThunk(
+  'major/getMajors',
+  async (t_faculty_id: number, thunkAPI: any) => {
+    const result = await majorApi.getMajors(t_faculty_id);
+    return result;
+  }
+);
 
 const majorSlice = createSlice({
   name: 'major',

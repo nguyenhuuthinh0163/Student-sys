@@ -26,7 +26,7 @@ class StudentService
 		$list = DB::table($student->getTable())
 		->join($major->getTable(), $major->getTable().'.'.Major::T_MAJOR_ID, '=', $student->getTable().'.'.Student::T_MAJOR_ID)
 		->join($faculty->getTable(), $faculty->getTable().'.'.Faculty::T_FACULTY_ID, '=', $student->getTable().'.'.Student::T_FACULTY_ID)
-		->select($student->getTable().'.*', Major::T_MAJOR_NAME, Faculty::T_FACULTY_NAME)
+		->select($student->getTable().'.*', Major::T_MAJOR_NAME, Faculty::T_FACULTY_NAME, $major->getTable().'.'.Major::T_MAJOR_ID, $faculty->getTable().'.'.Faculty::T_FACULTY_ID)
 		->get();
 		return $list;
 	}

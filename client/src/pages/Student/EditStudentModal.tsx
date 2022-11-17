@@ -5,17 +5,12 @@ import {
   DialogContent,
   TextField,
   DialogActions,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
 } from '@mui/material';
-import { unwrapResult } from '@reduxjs/toolkit';
-import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import Faculty from '../../Interfaces/Faculty';
 import Student from '../../Interfaces/Student';
-import { getFaculties } from '../../redux/facultySlice';
+import FacultyDropdown from './FacultyDropdown';
+import MajorDropdown from './MajorDropdown';
 
 interface EditStudentModalProps {
   openEditMoal: boolean;
@@ -30,14 +25,8 @@ function EditStudentModal({
   setOpenEditMoal,
   isEdit,
   student,
-  faculties,
 }: EditStudentModalProps) {
-  const dispatch = useDispatch();
-  // const [statusDialog, setStatusDialog] = useState<boolean>(false);
-  // const [faculties, setFaculties] = useState<Array<Faculty>>([]);
-  // const [studentForm, setStudentForm] = useState<Partial<Student>>({});
-  console.log(faculties);
-
+  const [selectedFaculty, setSelectedFaculty] = useState<number>();
   // t_student_name, t_major_name, t_faculty_name, t_student_birthday, t_student_gender, t_student_address, t_student_phone_number
   const handleClose = () => {
     setOpenEditMoal(false);
@@ -46,18 +35,6 @@ function EditStudentModal({
   const handleSubmit = () => {
     setOpenEditMoal(false);
   };
-
-  useEffect(
-    function () {
-      // const getDataFaculties = async () => {
-      //   const result = await dispatch(getFaculties());
-      //   const listFaculty = unwrapResult(result);
-      //   setFaculties(listFaculty);
-      // };
-      // getDataFaculties();
-    },
-    [faculties]
-  );
 
   return (
     <>
@@ -73,14 +50,8 @@ function EditStudentModal({
             fullWidth
             variant="standard"
           />
-          <FormControl variant="standard" fullWidth>
-            <InputLabel id="t-major-name-label">Student major</InputLabel>
-            <Select labelId="t-major-name-label" id="t_major_name" label="Student major">
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
-            </Select>
-          </FormControl>
+          <FacultyDropdown setSelectedFaculty={} />
+          {/* <MajorDropdown /> */}
           <TextField
             autoFocus
             margin="dense"
