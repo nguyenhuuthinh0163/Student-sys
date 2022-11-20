@@ -23,6 +23,28 @@ const studentApi = {
       }, 0);
     });
   },
+  postStudent: (data: Student) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        axios
+          .post('http://127.0.0.1:8000/api/student', {
+            t_student_name: data.t_student_name,
+            t_major_id: data.t_major_id,
+            t_faculty_id: data.t_faculty_id,
+            t_student_birthday: data.t_student_birthday,
+            t_student_gender: data.t_student_gender,
+            t_student_address: data.t_student_address,
+            t_student_phone_number: data.t_student_phone_number,
+          })
+          .then(function (response) {
+            resolve(response.data);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }, 0);
+    });
+  },
 };
 
 export default studentApi;

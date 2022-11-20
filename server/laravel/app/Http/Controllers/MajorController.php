@@ -10,7 +10,7 @@ class MajorController extends Controller
     /**
      * /api/majors/
      */
-    public function list(Request $request)
+    public function index(Request $request)
     {
         $input = $request->all();
         $var = [];

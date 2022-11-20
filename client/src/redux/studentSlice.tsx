@@ -1,4 +1,5 @@
 import studentApi from '../api/studentApi';
+import Student from '../Interfaces/Student';
 
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
@@ -9,6 +10,11 @@ export const getStudents = createAsyncThunk(
     return result;
   }
 );
+
+export const postStudent = createAsyncThunk('student/postStudent', async (data: Student) => {
+  const student = await studentApi.postStudent(data);
+  return student;
+});
 
 const studentSlice = createSlice({
   name: 'student',
@@ -34,6 +40,9 @@ const studentSlice = createSlice({
     ) => {
       state.loading = false;
       state.students = action.payload;
+    },
+    [postStudent.fulfilled]: (state: { students: any[] }, action: { payload: any }) => {
+      state.students.push(action.payload);
     },
   },
 });

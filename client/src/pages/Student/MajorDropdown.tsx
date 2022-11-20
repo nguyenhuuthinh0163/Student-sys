@@ -6,25 +6,31 @@ import { getMajors } from '../../redux/majorSlice';
 import Major from '../../Interfaces/Major';
 
 interface MajorDropdownProps {
-  t_faculty_id: number;
+  default_t_faculty_id: number;
+  t_major_id: number;
 }
-function MajorDropdown({ t_faculty_id }: MajorDropdownProps) {
+function MajorDropdown({ default_t_faculty_id, t_major_id }: MajorDropdownProps) {
   const dispatch = useDispatch();
   const [majors, setMajors] = useState<Array<Major>>([]);
-  const [selectMajor, setSelectMajor] = useState<string | undefined>('');
+  const [selectMajor, setSelectMajor] = useState<string | number | undefined>(
+    t_major_id !== 0 ? t_major_id : ''
+  );
 
   const handleChangeMajor = (event: SelectChangeEvent) => {
-    setSelectMajor(event.target.value);
+    setSelectMajor(event.target.value as string);
   };
 
-  useEffect(function () {
-    const getDataMajors = async () => {
-      const result = await dispatch(getMajors(t_faculty_id));
-      const listMajor = unwrapResult(result);
-      setMajors(listMajor);
-    };
-    getDataMajors();
-  }, []);
+  useEffect(
+    function () {
+      const getDataMajors = async () => {
+        const result = await dispatch(getMajors(default_t_faculty_id));
+        const listMajor = unwrapResult(result);
+        setMajors(listMajor);
+      };
+      getDataMajors();
+    },
+    [default_t_faculty_id, selectMajor]
+  );
 
   return (
     <>
@@ -34,7 +40,7 @@ function MajorDropdown({ t_faculty_id }: MajorDropdownProps) {
           labelId="t-major-name-label"
           id="t_major_name"
           label="Student major"
-          value={selectMajor}
+          value={selectMajor?.toString()}
           onChange={handleChangeMajor}
         >
           {majors.map((row, key) => (

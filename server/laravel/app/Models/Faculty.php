@@ -14,9 +14,9 @@ class Faculty extends Model
     const T_FACULTY_NAME = 't_faculty_name';
     const DELETED_AT = 'deleted_at';
     const CREATED_ID = 'created_id';
-    const CREATED_DATETIME = 'created_datetime';
+    const CREATED_AT = 'created_at';
     const UPDATED_ID = 'updated_id';
-    const UPDATE_DATETIME = 'update_datetime';
+    const UPDATED_AT = 'updated_at';
 
     public $table = "t_faculty";
     protected $primaryKey = self::T_FACULTY_ID;
@@ -25,8 +25,8 @@ class Faculty extends Model
         self::T_FACULTY_NAME,
         self::DELETED_AT,
         self::CREATED_ID,
-        self::CREATED_DATETIME,
+        self::CREATED_AT,
         self::UPDATED_ID,
-        self::UPDATE_DATETIME
+        self::UPDATED_AT
     ];
 }

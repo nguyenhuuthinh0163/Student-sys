@@ -18,9 +18,9 @@ class Student extends Model
     const T_STUDENT_IMAGE_URL = 't_student_image_url';
     const DELETED_AT = 'deleted_at';
     const CREATED_ID = 'created_id';
-    const CREATED_DATETIME = 'created_datetime';
+    const CREATED_AT = 'created_at';
     const UPDATED_ID = 'updated_id';
-    const UPDATE_DATETIME = 'update_datetime';
+    const UPDATED_AT = 'updated_at';
 
     public $table = "t_student";
     protected $primaryKey = self::T_STUDENT_ID;
@@ -36,8 +36,8 @@ class Student extends Model
         self::T_STUDENT_IMAGE_URL,
         self::DELETED_AT,
         self::CREATED_ID,
-        self::CREATED_DATETIME,
+        self::CREATED_AT,
         self::UPDATED_ID,
-        self::UPDATE_DATETIME
+        self::UPDATED_AT
     ];
 }

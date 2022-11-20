@@ -9,7 +9,7 @@ class FacultyController extends Controller
     /**
      * /api/faculties/
      */
-    public function list()
+    public function index()
     {
         $faculty = new FacultyService();
         return $faculty->getList();

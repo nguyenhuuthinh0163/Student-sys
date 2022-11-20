@@ -5,13 +5,21 @@ import Faculty from '../../Interfaces/Faculty';
 import { getFaculties } from '../../redux/facultySlice';
 import { unwrapResult } from '@reduxjs/toolkit';
 
-function FacultyDropdown() {
+interface FacultyDropdownProps {
+  t_faculty_id: number;
+  onChangeFaculty: (property: string) => void;
+}
+function FacultyDropdown({ t_faculty_id, onChangeFaculty }: FacultyDropdownProps) {
   const dispatch = useDispatch();
   const [faculties, setFaculties] = useState<Array<Faculty>>([]);
-  const [selectedFaculty, setSelectedFaculty] = useState<string | undefined>('');
+  const [selectedFaculty, setSelectedFaculty] = useState<string | number | undefined>(
+    t_faculty_id !== 0 ? t_faculty_id : ''
+  );
 
   const handleChangeFaculty = (event: SelectChangeEvent) => {
-    setSelectedFaculty(event.target.value);
+    let value = event.target.value as string;
+    setSelectedFaculty(value);
+    onChangeFaculty(value);
   };
 
   useEffect(function () {
@@ -31,7 +39,7 @@ function FacultyDropdown() {
           labelId="t-faculty-name-label"
           id="t_faculty_name"
           label="Student faculty"
-          value={selectedFaculty}
+          value={selectedFaculty?.toString()}
           onChange={handleChangeFaculty}
         >
           {faculties.map((row, key) => (

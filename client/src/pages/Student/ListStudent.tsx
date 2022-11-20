@@ -73,6 +73,19 @@ const headCells: HeadCell[] = [
   },
 ];
 
+const initialStudent: Student = {
+  t_student_id: 0,
+  t_student_name: '',
+  t_major_name: '',
+  t_major_id: 0,
+  t_faculty_name: '',
+  t_faculty_id: 0,
+  t_student_birthday: '',
+  t_student_gender: '',
+  t_student_address: '',
+  t_student_phone_number: '',
+};
+
 function ListStudent() {
   const dispatch = useDispatch();
   const myRef = React.useRef<any>();
@@ -142,6 +155,7 @@ function ListStudent() {
           isEdit={false}
           openEditMoal={openEditMoal}
           setOpenEditMoal={setOpenEditMoal}
+          student={initialStudent}
         />
       </Box>
       <List

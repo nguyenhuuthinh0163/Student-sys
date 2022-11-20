@@ -16,7 +16,7 @@ interface EditStudentModalProps {
   openEditMoal: boolean;
   setOpenEditMoal: (property: boolean) => void;
   isEdit: boolean;
-  student?: Student;
+  student: Student;
   faculties?: Faculty[];
 }
 
@@ -26,14 +26,30 @@ function EditStudentModal({
   isEdit,
   student,
 }: EditStudentModalProps) {
-  const [selectedFaculty, setSelectedFaculty] = useState<number>();
-  // t_student_name, t_major_name, t_faculty_name, t_student_birthday, t_student_gender, t_student_address, t_student_phone_number
+  const {
+    // t_student_id,
+    t_student_name,
+    // t_major_name,
+    t_major_id,
+    // t_faculty_name,
+    t_faculty_id,
+    t_student_birthday,
+    t_student_gender,
+    t_student_address,
+    t_student_phone_number,
+  }: Student = student;
+  const [selectFaculty, setSelectFaculty] = useState<number>(t_faculty_id);
+
   const handleClose = () => {
     setOpenEditMoal(false);
   };
 
   const handleSubmit = () => {
     setOpenEditMoal(false);
+  };
+
+  const handleChangeFacultyValue = (value: string) => {
+    setSelectFaculty(parseInt(value));
   };
 
   return (
@@ -49,9 +65,10 @@ function EditStudentModal({
             type="text"
             fullWidth
             variant="standard"
+            value={t_student_name}
           />
-          <FacultyDropdown setSelectedFaculty={} />
-          {/* <MajorDropdown /> */}
+          <FacultyDropdown onChangeFaculty={handleChangeFacultyValue} t_faculty_id={t_faculty_id} />
+          <MajorDropdown default_t_faculty_id={selectFaculty} t_major_id={t_major_id} />
           <TextField
             autoFocus
             margin="dense"
@@ -69,6 +86,7 @@ function EditStudentModal({
             type="text"
             fullWidth
             variant="standard"
+            value={t_student_birthday}
           />
           <TextField
             autoFocus
@@ -78,6 +96,7 @@ function EditStudentModal({
             type="text"
             fullWidth
             variant="standard"
+            value={t_student_gender}
           />
           <TextField
             autoFocus
@@ -87,6 +106,7 @@ function EditStudentModal({
             type="text"
             fullWidth
             variant="standard"
+            value={t_student_address}
           />
           <TextField
             autoFocus
@@ -96,6 +116,7 @@ function EditStudentModal({
             type="text"
             fullWidth
             variant="standard"
+            value={t_student_phone_number}
           />
         </DialogContent>
         <DialogActions>
