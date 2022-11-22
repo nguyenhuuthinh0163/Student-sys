@@ -41,12 +41,13 @@ const studentSlice = createSlice({
       state.loading = false;
       state.students = action.payload;
     },
-    [postStudent.fulfilled]: (state: { students: any[] }, action: { payload: any }) => {
+    [postStudent.fulfilled]: (state: { students: Student[] }, action: { payload: any }) => {
       state.students.push(action.payload);
     },
   },
 });
 
 const { reducer: studentReducer } = studentSlice;
-
+export const selectAllStudents = (state: { students: { students: Student[] } }) =>
+  state.students.students;
 export default studentReducer;

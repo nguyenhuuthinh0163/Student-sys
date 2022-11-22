@@ -11,12 +11,15 @@ import {
   Select,
   SelectChangeEvent,
 } from '@mui/material';
-import { useState } from 'react';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Faculty from '../../Interfaces/Faculty';
 import Student from '../../Interfaces/Student';
-import { getFaculties } from '../../redux/facultySlice';
-import { getMajors } from '../../redux/majorSlice';
-import { getStudents } from '../../redux/studentSlice';
+import { getFaculties, selectAllFaculties } from '../../redux/facultySlice';
+import { getMajors, selectAllMajors } from '../../redux/majorSlice';
+import { postStudent } from '../../redux/studentSlice';
 
 interface EditStudentModalProps {
   openEditMoal: boolean;
@@ -32,20 +35,7 @@ function EditStudentModal({
   isEdit,
   student,
 }: EditStudentModalProps) {
-  // const {
-  //   t_student_id,
-  //   t_student_name,
-  //   t_major_name,
-  //   t_major_id,
-  //   t_faculty_name,
-  //   t_faculty_id,
-  //   t_student_birthday,
-  //   t_student_gender,
-  //   t_student_address,
-  //   t_student_phone_number,
-  // }: Student = student;
-  const [selectFaculty, setSelectFaculty] = useState<number>(t_faculty_id);
-
+  const dispatch = useDispatch();
   const [studentName, setStudentName] = useState<string>('');
   const [faculty, setFaculty] = useState<string>('');
   const [major, setMajor] = useState<string>('');
@@ -63,6 +53,16 @@ function EditStudentModal({
     setOpenEditMoal(false);
   };
 
+  const resetForm = () => {
+    setStudentName('');
+    setFaculty('');
+    setMajor('');
+    setBirthDay('');
+    setGender('');
+    setAddress('');
+    setPhone('');
+  };
+
   const handleChangeFaculty = (event: SelectChangeEvent) => {
     let facultySelected = event.target.value;
     setFaculty(facultySelected);
@@ -72,11 +72,21 @@ function EditStudentModal({
   const handleSubmit = async () => {
     // Add new
     if (!isEdit) {
-      const resultAddNew = await dispatch({ title, content, user: userId });
+      const resultAddNew = await dispatch(
+        postStudent({
+          t_student_name: studentName,
+          t_major_id: major,
+          t_faculty_id: faculty,
+          t_student_birthday: birthDay,
+          t_student_gender: gender,
+          t_student_address: address,
+          t_student_phone_number: '+84' + phone,
+        })
+      );
       unwrapResult(resultAddNew);
-      setTitle('');
-      setContent('');
-      setUserId('');
+      console.log(resultAddNew);
+
+      resetForm();
     } else {
       // Edit
     }
@@ -149,7 +159,7 @@ function EditStudentModal({
             onChange={(e) => setBirthDay(e.target.value)}
           />
           <FormControl variant="standard" fullWidth>
-            <InputLabel id="t-student-gender-label">Student major</InputLabel>
+            <InputLabel id="t-student-gender-label">Gender</InputLabel>
             <Select
               labelId="t-student-gender-label"
               id="t_student_gender"

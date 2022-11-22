@@ -1,4 +1,5 @@
 import majorApi from '../api/majorApi';
+import Major from '../Interfaces/Major';
 
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
@@ -28,7 +29,10 @@ const majorSlice = createSlice({
       state.error = action.error;
     },
 
-    [getMajors.fulfilled]: (state: { loading: boolean; majors: any }, action: { payload: any }) => {
+    [getMajors.fulfilled]: (
+      state: { loading: boolean; majors: Major[] },
+      action: { payload: any }
+    ) => {
       state.loading = false;
       state.majors = action.payload;
     },
@@ -36,5 +40,5 @@ const majorSlice = createSlice({
 });
 
 const { reducer: majorReducer } = majorSlice;
-
+export const selectAllMajors = (state: { majors: { majors: Major[] } }) => state.majors.majors;
 export default majorReducer;

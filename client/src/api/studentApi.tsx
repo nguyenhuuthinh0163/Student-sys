@@ -27,7 +27,7 @@ const studentApi = {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         axios
-          .post('http://127.0.0.1:8000/api/student', {
+          .post('http://127.0.0.1:8000/api/students', {
             t_student_name: data.t_student_name,
             t_major_id: data.t_major_id,
             t_faculty_id: data.t_faculty_id,

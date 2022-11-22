@@ -1,4 +1,5 @@
 import facultyApi from '../api/facultyApi';
+import Faculty from '../Interfaces/Faculty';
 
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
@@ -29,7 +30,7 @@ const facultySlice = createSlice({
     },
 
     [getFaculties.fulfilled]: (
-      state: { loading: boolean; faculties: any },
+      state: { loading: boolean; faculties: Faculty[] },
       action: { payload: any }
     ) => {
       state.loading = false;
@@ -39,5 +40,6 @@ const facultySlice = createSlice({
 });
 
 const { reducer: facultyReducer } = facultySlice;
-
+export const selectAllFaculties = (state: { faculties: { faculties: Faculty[] } }) =>
+  state.faculties.faculties;
 export default facultyReducer;
