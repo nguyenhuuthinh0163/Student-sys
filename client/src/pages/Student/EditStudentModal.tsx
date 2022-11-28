@@ -10,6 +10,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  FormHelperText,
 } from '@mui/material';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
@@ -19,21 +20,32 @@ import Faculty from '../../Interfaces/Faculty';
 import Student from '../../Interfaces/Student';
 import { getFaculties, selectAllFaculties } from '../../redux/facultySlice';
 import { getMajors, selectAllMajors } from '../../redux/majorSlice';
-import { postStudent } from '../../redux/studentSlice';
+import { getStudents, postStudent } from '../../redux/studentSlice';
+import ErrorText from '../Common/ErrorText';
 
 interface EditStudentModalProps {
   openEditMoal: boolean;
   setOpenEditMoal: (property: boolean) => void;
+  // setListStudent: (property: Student[]) => void;
   isEdit: boolean;
-  student: Student;
   faculties?: Faculty[];
+}
+
+interface errorMessageType {
+  t_student_name: string[];
+  t_major_id: string[];
+  t_faculty_id: string[];
+  t_student_birthday: string[];
+  t_student_gender: string[];
+  t_student_address: string[];
+  t_student_phone_number: string[];
 }
 
 function EditStudentModal({
   openEditMoal,
   setOpenEditMoal,
+  // setListStudent,
   isEdit,
-  student,
 }: EditStudentModalProps) {
   const dispatch = useDispatch();
   const [studentName, setStudentName] = useState<string>('');
@@ -49,6 +61,9 @@ function EditStudentModal({
   const listFacultyLoading = useSelector(
     (state: { faculties: { loading: boolean } }) => state.faculties.loading
   );
+  const [errorMessage, setErrorMessage] = useState<errorMessageType | null>(null);
+  // const errorMessage = useSelector((state: { students: { error: any } }) => state.students.error);
+
   const handleClose = () => {
     setOpenEditMoal(false);
   };
@@ -72,7 +87,7 @@ function EditStudentModal({
   const handleSubmit = async () => {
     // Add new
     if (!isEdit) {
-      const resultAddNew = await dispatch(
+      const result = await dispatch(
         postStudent({
           t_student_name: studentName,
           t_major_id: major,
@@ -80,13 +95,17 @@ function EditStudentModal({
           t_student_birthday: birthDay,
           t_student_gender: gender,
           t_student_address: address,
-          t_student_phone_number: '+84' + phone,
+          t_student_phone_number: phone,
         })
-      );
-      unwrapResult(resultAddNew);
-      console.log(resultAddNew);
-
-      resetForm();
+      )
+        .unwrap()
+        .then((payload: any) => {
+          return payload;
+        })
+        .catch((error: any) => {
+          return error.error_message;
+        });
+      setErrorMessage(result);
     } else {
       // Edit
     }
@@ -104,6 +123,8 @@ function EditStudentModal({
         <DialogTitle>{!isEdit ? 'Create new student' : 'Edit student'}</DialogTitle>
         <DialogContent>
           <TextField
+            error={errorMessage?.t_student_name[0] !== undefined}
+            helperText={<ErrorText textContent={errorMessage?.t_student_name[0]} />}
             margin="dense"
             id="t_student_name"
             label="Student name"
@@ -113,7 +134,11 @@ function EditStudentModal({
             value={studentName}
             onChange={(e) => setStudentName(e.target.value as string)}
           />
-          <FormControl variant="standard" fullWidth>
+          <FormControl
+            variant="standard"
+            fullWidth
+            error={errorMessage?.t_faculty_id[0] !== undefined}
+          >
             <InputLabel id="t-faculty-name-label">Student Faculty</InputLabel>
             <Select
               labelId="t-faculty-name-label"
@@ -128,6 +153,9 @@ function EditStudentModal({
                 </MenuItem>
               ))}
             </Select>
+            <FormHelperText>
+              <ErrorText textContent={errorMessage?.t_faculty_id[0]} />
+            </FormHelperText>
           </FormControl>
           <FormControl variant="standard" fullWidth>
             <InputLabel id="t-major-name-label">Student major</InputLabel>

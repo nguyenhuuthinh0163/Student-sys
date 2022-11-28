@@ -5,21 +5,26 @@ const studentApi = {
   getStudents: () => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        axios.get('http://127.0.0.1:8000/api/students').then((res) => {
-          const result = res.data.map(function (item: Student) {
-            return {
-              t_student_id: item.t_student_id,
-              t_student_name: item.t_student_name,
-              t_major_name: item.t_major_name,
-              t_faculty_name: item.t_faculty_name,
-              t_student_birthday: item.t_student_birthday,
-              t_student_gender: item.t_student_gender,
-              t_student_address: item.t_student_address,
-              t_student_phone_number: item.t_student_phone_number,
-            };
+        axios
+          .get('http://127.0.0.1:8000/api/students')
+          .then((res) => {
+            const result = res.data.map(function (item: Student) {
+              return {
+                t_student_id: item.t_student_id,
+                t_student_name: item.t_student_name,
+                t_major_name: item.t_major_name,
+                t_faculty_name: item.t_faculty_name,
+                t_student_birthday: item.t_student_birthday,
+                t_student_gender: item.t_student_gender,
+                t_student_address: item.t_student_address,
+                t_student_phone_number: item.t_student_phone_number,
+              };
+            });
+            resolve(result);
+          })
+          .catch((error) => {
+            reject(error);
           });
-          resolve(result);
-        });
       }, 0);
     });
   },
@@ -36,11 +41,11 @@ const studentApi = {
             t_student_address: data.t_student_address,
             t_student_phone_number: data.t_student_phone_number,
           })
-          .then(function (response) {
+          .then((response) => {
             resolve(response.data);
           })
-          .catch(function (error) {
-            console.log(error);
+          .catch((error) => {
+            reject(error.response);
           });
       }, 0);
     });

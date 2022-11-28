@@ -39,7 +39,7 @@ function EnhancedTableHead({
           >
             <TableSortLabel
               active={true}
-              direction={orderBy === headCell.id ? order : 'asc'}
+              direction={orderBy === headCell.id ? order : 'desc'}
               onClick={createSortHandler(headCell.id)}
             >
               {headCell.label}

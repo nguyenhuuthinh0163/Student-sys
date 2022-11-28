@@ -2,10 +2,10 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { alpha, styled } from '@mui/material/styles';
 import { TableRow, TableCell, Box, Typography, Button } from '@mui/material';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Student from '../../Interfaces/Student';
-import { getStudents } from '../../redux/studentSlice';
+import { getStudents, selectAllStudents } from '../../redux/studentSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
 import ListItemStudent from './ListItemStudent';
 import { HeadCell } from '../../Interfaces/List';
@@ -67,39 +67,27 @@ const headCells: HeadCell[] = [
   },
   {
     id: 't_student_phone_number',
-    numeric: true,
+    numeric: false,
     disablePadding: false,
     label: 'Phone',
   },
 ];
-
-const initialStudent: Student = {
-  t_student_id: 0,
-  t_student_name: '',
-  t_major_name: '',
-  t_major_id: 0,
-  t_faculty_name: '',
-  t_faculty_id: 0,
-  t_student_birthday: '',
-  t_student_gender: '',
-  t_student_address: '',
-  t_student_phone_number: '',
-};
 
 function ListStudent() {
   const dispatch = useDispatch();
   const myRef = React.useRef<any>();
 
   // Pagination
-  const [order, setOrder] = React.useState<Order>('asc');
+  const [order, setOrder] = React.useState<Order>('desc');
   const [orderBy, setOrderBy] = React.useState<keyof Student>('t_studennt_id');
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const tablePagination = { order, orderBy, selected, page, rowsPerPage };
-  const [listData, setListData] = React.useState<Array<Student>>([]);
+  const listStudent = useSelector(selectAllStudents);
+  // const [listStudent, setListStudent] = React.useState<Array<Student>>([]);
   const [openEditMoal, setOpenEditMoal] = React.useState(false);
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - listData.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - listStudent.length) : 0;
 
   const handleClickEvent = (event: React.MouseEvent<unknown>, name: string | number) => {
     myRef.current?.handleClick(event, name);
@@ -109,17 +97,25 @@ function ListStudent() {
     setOpenEditMoal(true);
   };
 
-  useEffect(
-    function () {
-      const getDataStudents = async () => {
-        const result = await dispatch(getStudents());
-        const students = unwrapResult(result);
-        setListData(students);
-      };
-      getDataStudents();
-    },
-    [order, orderBy, selected, page, rowsPerPage]
-  );
+  const getListStatus = useSelector((state: any) => state.students.loading);
+
+  useEffect(() => {
+    if (getListStatus === false) {
+      dispatch(getStudents());
+    }
+  }, [dispatch]);
+
+  // useEffect(
+  //   function () {
+  //     const getDataStudents = async () => {
+  //       const result = await dispatch(getStudents());
+  //       const students = unwrapResult(result);
+  //       setListStudent(students);
+  //     };
+  //     getDataStudents();
+  //   },
+  //   [order, orderBy, selected, page, rowsPerPage]
+  // );
   return (
     <>
       <Box
@@ -155,14 +151,14 @@ function ListStudent() {
           isEdit={false}
           openEditMoal={openEditMoal}
           setOpenEditMoal={setOpenEditMoal}
-          student={initialStudent}
+          // setListStudent={setListStudent}
         />
       </Box>
       <List
         ref={myRef}
         headCells={headCells}
         colSpanNoData={9}
-        listData={listData}
+        listData={listStudent}
         tablePagination={tablePagination}
         onOrder={setOrder}
         onOrderBy={setOrderBy}
@@ -180,7 +176,7 @@ function ListStudent() {
               <TableCell colSpan={9} />
             </StyledTableRow>
           ) : (
-            stableSort(listData, getComparator(order, orderBy))
+            stableSort(listStudent, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => {
                 const isItemSelected = myRef.current?.isSelected(row.t_student_name);
