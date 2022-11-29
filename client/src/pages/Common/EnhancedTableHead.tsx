@@ -30,6 +30,7 @@ function EnhancedTableHead({
             }}
           />
         </TableCell>
+        <TableCell>Action</TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}

@@ -35,7 +35,10 @@ const List = React.forwardRef(
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.target.checked) {
-        const newSelected = listData.map((n) => n[selectedColumn]);
+        const newSelected = listData.map((n) => {
+          return n[selectedColumn].toString();
+        });
+
         onSelected(newSelected);
         return;
       }
@@ -71,7 +74,9 @@ const List = React.forwardRef(
       onPage(0);
     };
 
-    const isSelected = (name: string | number) => selected.indexOf(name.toString()) !== -1;
+    const isSelected = (name: string | number) => {
+      return selected.indexOf(name.toString()) !== -1;
+    };
 
     // Avoid a layout jump when reaching the last page with empty listData.
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - listData.length) : 0;

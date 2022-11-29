@@ -11,13 +11,13 @@ import {
   Select,
   SelectChangeEvent,
   FormHelperText,
+  Alert,
 } from '@mui/material';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 import Faculty from '../../Interfaces/Faculty';
-import Student from '../../Interfaces/Student';
 import { getFaculties, selectAllFaculties } from '../../redux/facultySlice';
 import { getMajors, selectAllMajors } from '../../redux/majorSlice';
 import { getStudents, postStudent } from '../../redux/studentSlice';
@@ -65,10 +65,10 @@ function EditStudentModal({
   // const errorMessage = useSelector((state: { students: { error: any } }) => state.students.error);
 
   const handleClose = () => {
-    setOpenEditMoal(false);
+    resetCloseForm();
   };
 
-  const resetForm = () => {
+  const resetCloseForm = () => {
     setStudentName('');
     setFaculty('');
     setMajor('');
@@ -76,6 +76,9 @@ function EditStudentModal({
     setGender('');
     setAddress('');
     setPhone('');
+    setOpenEditMoal(false);
+    setErrorMessage(null);
+    dispatch(getStudents());
   };
 
   const handleChangeFaculty = (event: SelectChangeEvent) => {
@@ -85,6 +88,7 @@ function EditStudentModal({
   };
 
   const handleSubmit = async () => {
+    setErrorMessage(null);
     // Add new
     if (!isEdit) {
       const result = await dispatch(
@@ -100,12 +104,11 @@ function EditStudentModal({
       )
         .unwrap()
         .then((payload: any) => {
-          return payload;
+          resetCloseForm();
         })
         .catch((error: any) => {
-          return error.error_message;
+          setErrorMessage(error.error_message);
         });
-      setErrorMessage(result);
     } else {
       // Edit
     }
@@ -157,7 +160,11 @@ function EditStudentModal({
               <ErrorText textContent={errorMessage?.t_faculty_id[0]} />
             </FormHelperText>
           </FormControl>
-          <FormControl variant="standard" fullWidth>
+          <FormControl
+            variant="standard"
+            fullWidth
+            error={errorMessage?.t_major_id[0] !== undefined}
+          >
             <InputLabel id="t-major-name-label">Student major</InputLabel>
             <Select
               labelId="t-major-name-label"
@@ -172,8 +179,13 @@ function EditStudentModal({
                 </MenuItem>
               ))}
             </Select>
+            <FormHelperText>
+              <ErrorText textContent={errorMessage?.t_major_id[0]} />
+            </FormHelperText>
           </FormControl>
           <TextField
+            error={errorMessage?.t_student_birthday[0] !== undefined}
+            helperText={<ErrorText textContent={errorMessage?.t_student_birthday[0]} />}
             margin="dense"
             id="t_student_birthday"
             label="Birthday"
@@ -186,7 +198,11 @@ function EditStudentModal({
             value={birthDay}
             onChange={(e) => setBirthDay(e.target.value)}
           />
-          <FormControl variant="standard" fullWidth>
+          <FormControl
+            variant="standard"
+            fullWidth
+            error={errorMessage?.t_student_gender[0] !== undefined}
+          >
             <InputLabel id="t-student-gender-label">Gender</InputLabel>
             <Select
               labelId="t-student-gender-label"
@@ -198,8 +214,13 @@ function EditStudentModal({
               <MenuItem value={1}>Nam</MenuItem>
               <MenuItem value={0}>Nữ</MenuItem>
             </Select>
+            <FormHelperText>
+              <ErrorText textContent={errorMessage?.t_student_gender[0]} />
+            </FormHelperText>
           </FormControl>
           <TextField
+            error={errorMessage?.t_student_address[0] !== undefined}
+            helperText={<ErrorText textContent={errorMessage?.t_student_address[0]} />}
             margin="dense"
             id="t_student_address"
             label="Student address"
@@ -210,6 +231,8 @@ function EditStudentModal({
             onChange={(e) => setAddress(e.target.value)}
           />
           <TextField
+            error={errorMessage?.t_student_phone_number[0] !== undefined}
+            helperText={<ErrorText textContent={errorMessage?.t_student_phone_number[0]} />}
             margin="dense"
             id="t_student_phone_number"
             label="Phone number"
@@ -219,6 +242,11 @@ function EditStudentModal({
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
+          {errorMessage ? (
+            <Alert severity="error">There are some errors, please check it !</Alert>
+          ) : (
+            ' '
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>

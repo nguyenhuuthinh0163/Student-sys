@@ -1,18 +1,19 @@
 import { alpha, styled } from '@mui/material/styles';
 import { TableRow, TableCell, Checkbox } from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
 import { ListItemProps } from '../../Interfaces/List';
 import Student from '../../Interfaces/Student';
 import { displayGender } from '../../Utils/ListHelper';
 
 interface ListItemStudentProps extends ListItemProps {
   row: Student;
-  hanleClick: (event: React.MouseEvent<unknown>, property: string) => void;
+  hanleClick: (event: React.MouseEvent<unknown>, property: number) => void;
 }
 function ListItemStudent({ row, isItemSelected, labelId, hanleClick }: ListItemStudentProps) {
   return (
     <StyledTableRow
       hover
-      onClick={(event) => hanleClick(event, row.t_student_name)}
+      onClick={(event) => hanleClick(event, row.t_student_id)}
       role="checkbox"
       aria-checked={isItemSelected}
       tabIndex={-1}
@@ -26,6 +27,9 @@ function ListItemStudent({ row, isItemSelected, labelId, hanleClick }: ListItemS
             'aria-labelledby': labelId,
           }}
         />
+      </TableCell>
+      <TableCell align="left" width={50}>
+        <EditIcon sx={{ fontSize: 20, cursor: 'pointer' }} />
       </TableCell>
       <TableCell component="th" align="right" id={labelId} scope="row" padding="none" width={50}>
         {row.t_student_id}

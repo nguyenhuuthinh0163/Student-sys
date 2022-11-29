@@ -26,7 +26,7 @@ const headCells: HeadCell[] = [
   {
     id: 't_student_id',
     numeric: true,
-    disablePadding: true,
+    disablePadding: false,
     label: 'ID',
   },
   {
@@ -103,7 +103,7 @@ function ListStudent() {
     if (getListStatus === false) {
       dispatch(getStudents());
     }
-  }, [dispatch]);
+  }, [dispatch, selected]);
 
   // useEffect(
   //   function () {
@@ -157,7 +157,7 @@ function ListStudent() {
       <List
         ref={myRef}
         headCells={headCells}
-        colSpanNoData={9}
+        colSpanNoData={10}
         listData={listStudent}
         tablePagination={tablePagination}
         onOrder={setOrder}
@@ -165,7 +165,7 @@ function ListStudent() {
         onSelected={setSelected}
         onPage={setPage}
         onRowsPerPage={setRowsPerPage}
-        selectedColumn={'t_student_name'}
+        selectedColumn={'t_student_id'}
         ListItems={
           emptyRows > 0 ? (
             <StyledTableRow
@@ -173,18 +173,17 @@ function ListStudent() {
                 height: 33 * emptyRows,
               }}
             >
-              <TableCell colSpan={9} />
+              <TableCell colSpan={10} />
             </StyledTableRow>
           ) : (
             stableSort(listStudent, getComparator(order, orderBy))
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row, index) => {
-                const isItemSelected = myRef.current?.isSelected(row.t_student_name);
+                const isItemSelected = myRef.current?.isSelected(row.t_student_id);
                 const labelId = `enhanced-table-checkbox-${index}`;
-
                 return (
                   <ListItemStudent
-                    hanleClick={(event) => handleClickEvent(event, row.t_student_name)}
+                    hanleClick={(event) => handleClickEvent(event, row.t_student_id)}
                     row={row}
                     isItemSelected={isItemSelected}
                     key={index}
