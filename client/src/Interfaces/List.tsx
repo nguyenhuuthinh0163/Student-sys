@@ -1,3 +1,4 @@
+import { AnyAction } from '@reduxjs/toolkit';
 import { Order } from '../Types/Order';
 
 interface EnhancedTableProps {
@@ -7,6 +8,7 @@ interface EnhancedTableProps {
   order: Order;
   orderBy: string | number;
   rowCount: number;
+  rowsPerPage: number;
   headCells: HeadCell[];
 }
 
@@ -51,6 +53,7 @@ interface ListItemCellProps {
 
 interface EnhancedTableToolbarProps {
   numSelected: number;
+  deleteItem: () => void;
 }
 
 export {

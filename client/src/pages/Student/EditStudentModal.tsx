@@ -20,14 +20,13 @@ import { useSelector } from 'react-redux';
 import Faculty from '../../Interfaces/Faculty';
 import { getFaculties, selectAllFaculties } from '../../redux/facultySlice';
 import { getMajors, selectAllMajors } from '../../redux/majorSlice';
-import { getStudents, postStudent } from '../../redux/studentSlice';
+import { getStudents, postStudent, putStudent, selectEditStudent } from '../../redux/studentSlice';
 import ErrorText from '../Common/ErrorText';
 
 interface EditStudentModalProps {
-  openEditMoal: boolean;
-  setOpenEditMoal: (property: boolean) => void;
+  openEditModal: boolean;
+  setOpenEditModal: (property: boolean) => void;
   // setListStudent: (property: Student[]) => void;
-  isEdit: boolean;
   faculties?: Faculty[];
 }
 
@@ -41,13 +40,9 @@ interface errorMessageType {
   t_student_phone_number: string[];
 }
 
-function EditStudentModal({
-  openEditMoal,
-  setOpenEditMoal,
-  // setListStudent,
-  isEdit,
-}: EditStudentModalProps) {
+function EditStudentModal({ openEditModal, setOpenEditModal }: EditStudentModalProps) {
   const dispatch = useDispatch();
+  const editStudent = useSelector(selectEditStudent);
   const [studentName, setStudentName] = useState<string>('');
   const [faculty, setFaculty] = useState<string>('');
   const [major, setMajor] = useState<string>('');
@@ -62,7 +57,7 @@ function EditStudentModal({
     (state: { faculties: { loading: boolean } }) => state.faculties.loading
   );
   const [errorMessage, setErrorMessage] = useState<errorMessageType | null>(null);
-  // const errorMessage = useSelector((state: { students: { error: any } }) => state.students.error);
+  const isEdit = Object.keys(editStudent).length !== 0;
 
   const handleClose = () => {
     resetCloseForm();
@@ -76,7 +71,7 @@ function EditStudentModal({
     setGender('');
     setAddress('');
     setPhone('');
-    setOpenEditMoal(false);
+    setOpenEditModal(false);
     setErrorMessage(null);
     dispatch(getStudents());
   };
@@ -91,7 +86,7 @@ function EditStudentModal({
     setErrorMessage(null);
     // Add new
     if (!isEdit) {
-      const result = await dispatch(
+      dispatch(
         postStudent({
           t_student_name: studentName,
           t_major_id: major,
@@ -110,7 +105,25 @@ function EditStudentModal({
           setErrorMessage(error.error_message);
         });
     } else {
-      // Edit
+      dispatch(
+        putStudent({
+          t_student_id: editStudent.t_student_id,
+          t_student_name: studentName,
+          t_major_id: major,
+          t_faculty_id: faculty,
+          t_student_birthday: birthDay,
+          t_student_gender: gender,
+          t_student_address: address,
+          t_student_phone_number: phone,
+        })
+      )
+        .unwrap()
+        .then((payload: any) => {
+          resetCloseForm();
+        })
+        .catch((error: any) => {
+          setErrorMessage(error.error_message);
+        });
     }
   };
 
@@ -118,11 +131,21 @@ function EditStudentModal({
     if (listFacultyLoading === false) {
       dispatch(getFaculties());
     }
-  }, [dispatch]);
+    if (Object.keys(editStudent).length !== 0) {
+      setStudentName(editStudent.t_student_name);
+      setFaculty(editStudent.t_faculty_id.toString());
+      dispatch(getMajors(major));
+      setMajor(editStudent.t_major_id.toString());
+      setBirthDay(editStudent.t_student_birthday);
+      setGender(editStudent.t_student_gender);
+      setAddress(editStudent.t_student_address);
+      setPhone(editStudent.t_student_phone_number);
+    }
+  }, [dispatch, editStudent]);
 
   return (
     <>
-      <Dialog open={openEditMoal} onClose={handleClose}>
+      <Dialog open={openEditModal} onClose={handleClose}>
         <DialogTitle>{!isEdit ? 'Create new student' : 'Edit student'}</DialogTitle>
         <DialogContent>
           <TextField

@@ -30,6 +30,8 @@ Route::resources([
     'majors' => MajorController::class,
 ]);
 
+// Route::delete('/delete/{id}', 'rendezv@destroy')->name('delete');
+
 // Route::resource('photos', PhotoController::class)->except([
 //     'create', 'store', 'update', 'destroy'
 // ]);

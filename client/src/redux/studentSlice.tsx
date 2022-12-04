@@ -1,4 +1,6 @@
+import { PayloadAction } from '@reduxjs/toolkit';
 import studentApi from '../api/studentApi';
+import ListStudentId from '../Interfaces/ListStudentId';
 import Student from '../Interfaces/Student';
 
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
@@ -27,14 +29,43 @@ export const postStudent = createAsyncThunk(
   }
 );
 
+export const putStudent = createAsyncThunk(
+  'student/putStudent',
+  async (data: Student, thunkAPI: any) => {
+    try {
+      const result = await studentApi.putStudent(data);
+      return result;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.data);
+    }
+  }
+);
+
+export const deleteStudent = createAsyncThunk(
+  'student/putStudent',
+  async (t_studennt_ids: ListStudentId, thunkAPI: any) => {
+    try {
+      const result = await studentApi.deleteStudent(t_studennt_ids);
+      return result;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.data);
+    }
+  }
+);
+
 const studentSlice = createSlice({
   name: 'student',
   initialState: {
     students: [],
+    editStudent: {},
     loading: false,
     error: '',
   },
-  reducers: {},
+  reducers: {
+    setEditStudent: (state: any, action: any) => {
+      state.editStudent = action.payload;
+    },
+  },
   extraReducers: {
     [getStudents.pending]: (state: { loading: boolean }) => {
       state.loading = true;
@@ -56,11 +87,29 @@ const studentSlice = createSlice({
     [postStudent.fulfilled]: (state: { students: Student[] }, action: { payload: any }) => {
       state.students.push(action.payload);
     },
+    [putStudent.rejected]: (state: any, action: any) => {
+      state.error = action.payload.error_message;
+    },
+    [putStudent.fulfilled]: (state: { students: Student[] }, action: { payload: any }) => {
+      let updatedStudent = action.payload;
+      let index = state.students.findIndex(
+        (student) => student.t_student_id === updatedStudent.t_studennt_id
+      );
+      state.students[index] = updatedStudent;
+    },
+    [deleteStudent.fulfilled]: (state: { students: Student[] }, action: { payload: any }) => {
+      state.students.filter((student) => student.t_student_id !== action.payload.t_studennt_id);
+    },
   },
 });
 
 const { reducer: studentReducer } = studentSlice;
+export const { setEditStudent } = studentSlice.actions;
+
 export const selectAllStudents = (state: { students: { students: Student[] } }) =>
   state.students.students;
-// export const selectAllErrors = (state: { students: { error: any } }) => state.students.error;
+
+export const selectEditStudent = (state: { students: { editStudent: Student } }) => {
+  return state.students.editStudent;
+};
 export default studentReducer;

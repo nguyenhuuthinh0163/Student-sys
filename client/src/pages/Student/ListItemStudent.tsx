@@ -4,12 +4,31 @@ import EditIcon from '@mui/icons-material/Edit';
 import { ListItemProps } from '../../Interfaces/List';
 import Student from '../../Interfaces/Student';
 import { displayGender } from '../../Utils/ListHelper';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { setEditStudent } from '../../redux/studentSlice';
 
 interface ListItemStudentProps extends ListItemProps {
   row: Student;
   hanleClick: (event: React.MouseEvent<unknown>, property: number) => void;
+  setOpenEditModal: (property: boolean) => void;
 }
-function ListItemStudent({ row, isItemSelected, labelId, hanleClick }: ListItemStudentProps) {
+function ListItemStudent({
+  row,
+  isItemSelected,
+  labelId,
+  hanleClick,
+  setOpenEditModal,
+}: ListItemStudentProps) {
+  const dispatch = useDispatch();
+
+  const hanleClickEdit = (event: React.MouseEvent<unknown>, editStudent: Student) => {
+    dispatch(setEditStudent(editStudent));
+    setOpenEditModal(true);
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
   return (
     <StyledTableRow
       hover
@@ -29,15 +48,18 @@ function ListItemStudent({ row, isItemSelected, labelId, hanleClick }: ListItemS
         />
       </TableCell>
       <TableCell align="left" width={50}>
-        <EditIcon sx={{ fontSize: 20, cursor: 'pointer' }} />
+        <EditIcon
+          sx={{ fontSize: 20, cursor: 'pointer' }}
+          onClick={(event) => hanleClickEdit(event, row)}
+        />
       </TableCell>
-      <TableCell component="th" align="right" id={labelId} scope="row" padding="none" width={50}>
+      <TableCell component="th" align="right" id={labelId} scope="row" width={50}>
         {row.t_student_id}
       </TableCell>
-      <TableCell align="left" width={200}>
+      <TableCell align="left" width={300}>
         {row.t_student_name}
       </TableCell>
-      <TableCell align="left" width={275}>
+      <TableCell align="left" width={250}>
         {row.t_major_name}
       </TableCell>
       <TableCell align="left" width={275}>

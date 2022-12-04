@@ -3,7 +3,10 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { EnhancedTableToolbarProps } from '../../Interfaces/List';
 
-const EnhancedTableToolbar = ({ numSelected }: EnhancedTableToolbarProps) => {
+const EnhancedTableToolbar = ({ numSelected, deleteItem }: EnhancedTableToolbarProps) => {
+  const handleClickDelete = () => {
+    deleteItem();
+  };
   return (
     <Box sx={{ borderColor: 'grey.500', borderRadius: '16px' }}>
       <Toolbar
@@ -21,7 +24,7 @@ const EnhancedTableToolbar = ({ numSelected }: EnhancedTableToolbarProps) => {
         </Typography>
         {numSelected > 0 ? (
           <Tooltip title="Delete">
-            <IconButton>
+            <IconButton onClick={handleClickDelete}>
               <DeleteIcon />
             </IconButton>
           </Tooltip>

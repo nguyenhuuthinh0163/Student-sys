@@ -35,7 +35,7 @@ const List = React.forwardRef(
 
     const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
       if (event.target.checked) {
-        const newSelected = listData.map((n) => {
+        const newSelected = listData.slice(0, rowsPerPage).map((n) => {
           return n[selectedColumn].toString();
         });
 
@@ -87,7 +87,7 @@ const List = React.forwardRef(
     }));
 
     return (
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ width: '100%', top: 250, position: 'absolute' }}>
         <Paper sx={{ width: '100%', mb: 2 }}>
           {/* <EnhancedTableToolbar title={title} numSelected={selected.length} /> */}
           <TableContainer>
@@ -99,6 +99,7 @@ const List = React.forwardRef(
                 onSelectAllClick={handleSelectAllClick}
                 onRequestSort={handleRequestSort}
                 rowCount={listData.length}
+                rowsPerPage={rowsPerPage}
                 headCells={headCells}
               />
               <TableBody>{ListItems}</TableBody>

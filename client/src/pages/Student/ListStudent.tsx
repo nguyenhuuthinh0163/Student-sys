@@ -5,7 +5,12 @@ import { TableRow, TableCell, Box, Typography, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Student from '../../Interfaces/Student';
-import { getStudents, selectAllStudents } from '../../redux/studentSlice';
+import {
+  deleteStudent,
+  getStudents,
+  selectAllStudents,
+  setEditStudent,
+} from '../../redux/studentSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
 import ListItemStudent from './ListItemStudent';
 import { HeadCell } from '../../Interfaces/List';
@@ -85,8 +90,8 @@ function ListStudent() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const tablePagination = { order, orderBy, selected, page, rowsPerPage };
   const listStudent = useSelector(selectAllStudents);
-  // const [listStudent, setListStudent] = React.useState<Array<Student>>([]);
-  const [openEditMoal, setOpenEditMoal] = React.useState(false);
+
+  const [openEditModal, setOpenEditModal] = React.useState(false);
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - listStudent.length) : 0;
 
   const handleClickEvent = (event: React.MouseEvent<unknown>, name: string | number) => {
@@ -94,7 +99,12 @@ function ListStudent() {
   };
 
   const handleClickAdd = () => {
-    setOpenEditMoal(true);
+    dispatch(setEditStudent({}));
+    setOpenEditModal(true);
+  };
+
+  const handleDeleteStudent = async () => {
+    dispatch(deleteStudent(selected));
   };
 
   const getListStatus = useSelector((state: any) => state.students.loading);
@@ -123,7 +133,6 @@ function ListStudent() {
           ml: '15px',
           display: 'inline-flex',
           flexDirection: 'column',
-          paddingBottom: '50px',
           paddingTop: '20px',
           rowGap: '10px',
         }}
@@ -143,14 +152,17 @@ function ListStudent() {
         >
           Student list
         </Typography>
-        {selected.length > 0 ? <EnhancedTableToolbar numSelected={selected.length} /> : ''}
         <Button variant="outlined" onClick={handleClickAdd}>
           Create new Student
         </Button>
+        {selected.length > 0 ? (
+          <EnhancedTableToolbar deleteItem={handleDeleteStudent} numSelected={selected.length} />
+        ) : (
+          ''
+        )}
         <EditStudentModal
-          isEdit={false}
-          openEditMoal={openEditMoal}
-          setOpenEditMoal={setOpenEditMoal}
+          openEditModal={openEditModal}
+          setOpenEditModal={setOpenEditModal}
           // setListStudent={setListStudent}
         />
       </Box>
@@ -188,6 +200,7 @@ function ListStudent() {
                     isItemSelected={isItemSelected}
                     key={index}
                     labelId={labelId}
+                    setOpenEditModal={setOpenEditModal}
                   />
                 );
               })
