@@ -109,8 +109,10 @@ class StudentController extends Controller
 	*/
 	public function destroy(Request $request)
 	{
-		var_dump($request->all());die;
-		// StudentService::validateListStudent($request)
+		if (isset($request->t_studennt_ids) && StudentService::validateListStudent($request->t_studennt_ids))
+		{
+			StudentService::deleteListStudent($request->t_studennt_ids);
+		}
 		return response(['data'	=> true], 200);
 	}
 }

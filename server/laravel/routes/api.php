@@ -25,13 +25,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::get('majors', 'App\Http\Controllers\MajorController@list');
 // Route::get('faculties', 'App\Http\Controllers\FacultyController@list');
 Route::resources([
-    'students' => StudentController::class,
-    'faculties' => FacultyController::class,
-    'majors' => MajorController::class,
+    '/students' => StudentController::class,
+    '/faculties' => FacultyController::class,
+    '/majors' => MajorController::class,
 ]);
 
-// Route::delete('/delete/{id}', 'rendezv@destroy')->name('delete');
-
+Route::delete('students', [StudentController::class, 'destroy']);
 // Route::resource('photos', PhotoController::class)->except([
 //     'create', 'store', 'update', 'destroy'
 // ]);

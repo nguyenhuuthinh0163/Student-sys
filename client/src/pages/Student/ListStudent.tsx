@@ -105,6 +105,10 @@ function ListStudent() {
 
   const handleDeleteStudent = async () => {
     dispatch(deleteStudent(selected));
+    dispatch(getStudents());
+    console.log(listStudent);
+
+    setSelected([]);
   };
 
   const getListStatus = useSelector((state: any) => state.students.loading);

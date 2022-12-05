@@ -114,24 +114,6 @@ class StudentService
 	}
 
 	/**
-	 * Delete one Student
-	 * 
-	 * @param String $t_student_id t_student_id
-	 * @return void
-	 */
-	public static function deleteOneStudent($t_student_id)
-	{
-		try
-		{
-			Student::where(Student::T_STUDENT_ID, $t_student_id)->update(Student::DELETED_AT, date('Y-m-d h:i:s'));
-		}
-		catch (Exception $ex)
-		{
-			return $ex->getMessage();
-		}
-	}
-
-	/**
 	 * Delete list Student
 	 * 
 	 * @param Array $listStudent List of student id
@@ -141,9 +123,7 @@ class StudentService
 	{
 		try
 		{
-			Student::whereIn(Student::T_STUDENT_ID, $listStudent)->count();
-			
-			// update(Student::DELETED_AT, date('Y-m-d h:i:s'));
+			Student::whereIn(Student::T_STUDENT_ID, $listStudent)->update([Student::DELETED_AT => date('Y-m-d h:i:s')]);
 		}
 		catch (Exception $ex)
 		{
@@ -162,31 +142,11 @@ class StudentService
 		$availableStudent = Student::whereIn(Student::T_STUDENT_ID, $listStudent)
 		->where(Student::DELETED_AT, null)
 		->count();
-		
+
 		if ($availableStudent !== count($listStudent))
 		{
 			return false;
 		}
 		return true;
-	}
-
-	/**
-	 * Validate one Student
-	 * 
-	 * @param String $t_student_id t_student_id
-	 * @return void
-	 */
-	public static function validateOneStudent($t_student_id)
-	{
-		$student = Student::where([
-			Student::T_STUDENT_ID	=> $t_student_id,
-			Student::DELETED_AT		=> null,
-		])->first();
-		
-		if ($student)
-		{
-			return true;
-		}
-		return false;
 	}
 }
