@@ -10,6 +10,7 @@ import {
   getStudents,
   selectAllStudents,
   setEditStudent,
+  setLoading,
 } from '../../redux/studentSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
 import ListItemStudent from './ListItemStudent';
@@ -93,6 +94,7 @@ function ListStudent() {
 
   const [openEditModal, setOpenEditModal] = React.useState(false);
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - listStudent.length) : 0;
+  const loadingListView = useSelector((state: any) => state.students.loading);
 
   const handleClickEvent = (event: React.MouseEvent<unknown>, name: string | number) => {
     myRef.current?.handleClick(event, name);
@@ -105,31 +107,14 @@ function ListStudent() {
 
   const handleDeleteStudent = async () => {
     dispatch(deleteStudent(selected));
-    dispatch(getStudents());
-    console.log(listStudent);
-
     setSelected([]);
   };
 
-  const getListStatus = useSelector((state: any) => state.students.loading);
-
   useEffect(() => {
-    if (getListStatus === false) {
+    if (loadingListView === false) {
       dispatch(getStudents());
     }
-  }, [dispatch, selected]);
-
-  // useEffect(
-  //   function () {
-  //     const getDataStudents = async () => {
-  //       const result = await dispatch(getStudents());
-  //       const students = unwrapResult(result);
-  //       setListStudent(students);
-  //     };
-  //     getDataStudents();
-  //   },
-  //   [order, orderBy, selected, page, rowsPerPage]
-  // );
+  }, [dispatch, selected, deleteStudent]);
   return (
     <>
       <Box

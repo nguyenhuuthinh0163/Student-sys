@@ -149,7 +149,7 @@ function EditStudentModal({ openEditModal, setOpenEditModal }: EditStudentModalP
         <DialogTitle>{!isEdit ? 'Create new student' : 'Edit student'}</DialogTitle>
         <DialogContent>
           <TextField
-            error={errorMessage?.t_student_name[0] !== undefined}
+            error={errorMessage?.t_student_name !== undefined}
             helperText={<ErrorText textContent={errorMessage?.t_student_name[0]} />}
             margin="dense"
             id="t_student_name"
@@ -163,7 +163,7 @@ function EditStudentModal({ openEditModal, setOpenEditModal }: EditStudentModalP
           <FormControl
             variant="standard"
             fullWidth
-            error={errorMessage?.t_faculty_id[0] !== undefined}
+            error={errorMessage?.t_faculty_id !== undefined}
           >
             <InputLabel id="t-faculty-name-label">Student Faculty</InputLabel>
             <Select
@@ -183,11 +183,7 @@ function EditStudentModal({ openEditModal, setOpenEditModal }: EditStudentModalP
               <ErrorText textContent={errorMessage?.t_faculty_id[0]} />
             </FormHelperText>
           </FormControl>
-          <FormControl
-            variant="standard"
-            fullWidth
-            error={errorMessage?.t_major_id[0] !== undefined}
-          >
+          <FormControl variant="standard" fullWidth error={errorMessage?.t_major_id !== undefined}>
             <InputLabel id="t-major-name-label">Student major</InputLabel>
             <Select
               labelId="t-major-name-label"
@@ -207,7 +203,7 @@ function EditStudentModal({ openEditModal, setOpenEditModal }: EditStudentModalP
             </FormHelperText>
           </FormControl>
           <TextField
-            error={errorMessage?.t_student_birthday[0] !== undefined}
+            error={errorMessage?.t_student_birthday !== undefined}
             helperText={<ErrorText textContent={errorMessage?.t_student_birthday[0]} />}
             margin="dense"
             id="t_student_birthday"
@@ -224,7 +220,7 @@ function EditStudentModal({ openEditModal, setOpenEditModal }: EditStudentModalP
           <FormControl
             variant="standard"
             fullWidth
-            error={errorMessage?.t_student_gender[0] !== undefined}
+            error={errorMessage?.t_student_gender !== undefined}
           >
             <InputLabel id="t-student-gender-label">Gender</InputLabel>
             <Select
@@ -242,7 +238,7 @@ function EditStudentModal({ openEditModal, setOpenEditModal }: EditStudentModalP
             </FormHelperText>
           </FormControl>
           <TextField
-            error={errorMessage?.t_student_address[0] !== undefined}
+            error={errorMessage?.t_student_address !== undefined}
             helperText={<ErrorText textContent={errorMessage?.t_student_address[0]} />}
             margin="dense"
             id="t_student_address"
@@ -254,7 +250,7 @@ function EditStudentModal({ openEditModal, setOpenEditModal }: EditStudentModalP
             onChange={(e) => setAddress(e.target.value)}
           />
           <TextField
-            error={errorMessage?.t_student_phone_number[0] !== undefined}
+            error={errorMessage?.t_student_phone_number !== undefined}
             helperText={<ErrorText textContent={errorMessage?.t_student_phone_number[0]} />}
             margin="dense"
             id="t_student_phone_number"

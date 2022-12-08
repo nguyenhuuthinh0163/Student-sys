@@ -65,6 +65,9 @@ const studentSlice = createSlice({
     setEditStudent: (state: any, action: any) => {
       state.editStudent = action.payload;
     },
+    setLoading: (state: any, action: any) => {
+      state.loading = action.payload;
+    },
   },
   extraReducers: {
     [getStudents.pending]: (state: { loading: boolean }) => {
@@ -85,7 +88,7 @@ const studentSlice = createSlice({
       state.error = action.payload.error_message;
     },
     [postStudent.fulfilled]: (state: { students: Student[] }, action: { payload: any }) => {
-      state.students.push(action.payload);
+      state.students.push(action.payload.data);
     },
     [putStudent.rejected]: (state: any, action: any) => {
       state.error = action.payload.error_message;
@@ -97,18 +100,19 @@ const studentSlice = createSlice({
       );
       state.students[index] = updatedStudent;
     },
-    [deleteStudent.fulfilled]: (state: { students: Student[] }, action: { payload: any }) => {
-      state.students.filter((student) => student.t_student_id !== action.payload.t_studennt_id);
+    [deleteStudent.fulfilled]: (state: any, action: any) => {
+      state.students = state.students.filter(
+        (student: Student) => !action.payload.data.includes(student.t_student_id.toString())
+      );
     },
   },
 });
 
 const { reducer: studentReducer } = studentSlice;
-export const { setEditStudent } = studentSlice.actions;
+export const { setEditStudent, setLoading } = studentSlice.actions;
 
 export const selectAllStudents = (state: { students: { students: Student[] } }) =>
   state.students.students;
-
 export const selectEditStudent = (state: { students: { editStudent: Student } }) => {
   return state.students.editStudent;
 };

@@ -113,6 +113,6 @@ class StudentController extends Controller
 		{
 			StudentService::deleteListStudent($request->t_studennt_ids);
 		}
-		return response(['data'	=> true], 200);
+		return response(['data'	=> $request->t_studennt_ids], 200);
 	}
 }
