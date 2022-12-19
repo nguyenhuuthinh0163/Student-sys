@@ -43,14 +43,14 @@ services:
     image: mysql:5.7
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
     volumes:
-      - db-data:/var/lib/mysql
+      - database:/var/lib/mysql
     environment:
       - "MYSQL_ROOT_PASSWORD=root"
       - "MYSQL_DATABASE=thinh"
     ports:
       - "33070"
   volumes:
-    db-data:
+    database:
 
   networks:
     ddl_default:
