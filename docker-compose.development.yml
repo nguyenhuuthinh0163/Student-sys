@@ -6,17 +6,16 @@ services:
     image: student_server
     restart: always
     ports:
-      - "40081:40081"
+      - "44444:44444"
     env_file:
-      - ./server/secret/local.env
+      - ./server/laravel/.env
     volumes:
       - ./server/secret/:/etc/gcp/
       - ./server/laravel/:/var/www/html/:rw
-    command: ["php", "-S", "0.0.0.0:40081", "-t", "public/"]
+    command: ["php", "-S", "0.0.0.0:44444", "-t", "public/"]
     depends_on:
       - cloudsql
     networks:
-      - default
       - ddl_default
 
   student_client:
@@ -25,33 +24,29 @@ services:
     image: student_client
     restart: always
     ports:
-      - "28082:28082"
+      - "33333:3000"
     volumes:
       - ./client/src:/app/src:rw
-      - ./client/dist:/app/dist:rw
-      - ./client/__tests__:/app/__tests__:rw
-      - ./client/.eslintrc.json:/app/eslintrc.json:rw
+      - ./client/public:/app/public:rw
       - ./client/.prettierrc:/app/.prettierrc:rw
       - ./client/package.json:/app/package.json:rw
       - ./client/yarn.lock:/app/yarn.lock:rw
       - ./client/tsconfig.json:/app/tsconfig.json:rw
-      - ./client/webpack.config.js:/app/webpack.config.js:rw
-    command: [debug]
+    command: [start]
 
   cloudsql:
+    build:
+      context: ./mysql
+    command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
     restart: always
-    image: mysql:5.7
-    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
     volumes:
-      - database:/var/lib/mysql
-    environment:
-      - "MYSQL_ROOT_PASSWORD=root"
-      - "MYSQL_DATABASE=thinh"
+      - ./mysql/init:/docker-entrypoint-initdb.d
     ports:
-      - "33070"
-  volumes:
-    database:
+      - "3308:3308"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: school_system
 
-  networks:
-    ddl_default:
-      external: true
+networks:
+  ddl_default:
+    external: true

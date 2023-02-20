@@ -1,4 +1,4 @@
-FROM php:8.0.24-fpm-alpine
+FROM php:8.1.12-fpm-alpine
 
 RUN apk --no-cache add \
         openssl \
@@ -15,7 +15,7 @@ RUN docker-php-ext-install pdo pdo_mysql xml zip opcache \
     && docker-php-ext-install gd
 
 # composer install
-RUN curl -sS https://getcomposer.org/installer | php -- --version=2.1.3 --install-dir=/usr/bin --filename=composer
+RUN curl -sS https://getcomposer.org/installer | php -- --version=2.5.2 --install-dir=/usr/bin --filename=composer
 
 # Laravel & dependency install
 COPY ./laravel/composer.json /tmp/composer.json

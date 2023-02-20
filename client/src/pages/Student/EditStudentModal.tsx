@@ -230,8 +230,8 @@ function EditStudentModal({ openEditModal, setOpenEditModal }: EditStudentModalP
               value={gender}
               onChange={(e) => setGender(e.target.value)}
             >
-              <MenuItem value={1}>Nam</MenuItem>
-              <MenuItem value={0}>Nữ</MenuItem>
+              <MenuItem value={1}>Male</MenuItem>
+              <MenuItem value={0}>Female</MenuItem>
             </Select>
             <FormHelperText>
               <ErrorText textContent={errorMessage?.t_student_gender[0]} />
