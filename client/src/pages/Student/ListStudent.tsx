@@ -10,7 +10,6 @@ import {
   getStudents,
   selectAllStudents,
   setEditStudent,
-  setLoading,
 } from '../../redux/studentSlice';
 import { unwrapResult } from '@reduxjs/toolkit';
 import ListItemStudent from './ListItemStudent';
@@ -149,11 +148,13 @@ function ListStudent() {
         ) : (
           ''
         )}
-        <EditStudentModal
-          openEditModal={openEditModal}
-          setOpenEditModal={setOpenEditModal}
-          // setListStudent={setListStudent}
-        />
+        {
+          openEditModal &&
+          <EditStudentModal
+            openEditModal={openEditModal}
+            setOpenEditModal={setOpenEditModal}
+          />
+        }
       </Box>
       <List
         ref={myRef}

@@ -12,11 +12,10 @@ services:
     volumes:
       - ./server/secret/:/etc/gcp/
       - ./server/laravel/:/var/www/html/:rw
-    command: ["php", "-S", "0.0.0.0:44444", "-t", "public/"]
     depends_on:
       - cloudsql
     networks:
-      - ddl_default
+      - network_default
 
   student_client:
     build:
@@ -32,21 +31,20 @@ services:
       - ./client/package.json:/app/package.json:rw
       - ./client/yarn.lock:/app/yarn.lock:rw
       - ./client/tsconfig.json:/app/tsconfig.json:rw
-    command: [start]
 
   cloudsql:
-    build:
-      context: ./mysql
-    command: mysqld --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_bin
+    image: mysql:5.7
     restart: always
     volumes:
       - ./mysql/init:/docker-entrypoint-initdb.d
     ports:
-      - "3308:3308"
+      - "3308:3306"
     environment:
       MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: school_system
+    networks:
+      - network_default
 
 networks:
-  ddl_default:
+  network_default:
     external: true

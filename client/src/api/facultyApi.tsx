@@ -5,7 +5,7 @@ const facultyApi = {
   getFaculties: () => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        axios.get('http://127.0.0.1:44444/api/faculties').then((res) => {
+        axios.get('http://localhost:44444/api/faculties').then((res) => {
           const result = res.data.map(function (item: Faculty) {
             return {
               t_faculty_id: item.t_faculty_id,

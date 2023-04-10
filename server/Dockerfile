@@ -39,3 +39,4 @@ RUN adduser -D -s /bin/sh -u 1000 student \
     && mv -n /tmp/vendor ./ \
     && composer dump-autoload \
     && chown -R student:student /var/www/html
+ENTRYPOINT ["php", "-S", "0.0.0.0:44444", "-t", "public/"]

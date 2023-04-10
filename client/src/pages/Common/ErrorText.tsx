@@ -2,5 +2,6 @@ interface errorTextProps {
   textContent: string | undefined;
 }
 export default function ErrorText({ textContent }: errorTextProps) {
-  return <>{textContent === undefined ? '' : textContent}</>;
+  const parsedError = Array.isArray(textContent) ? textContent[0] : textContent;
+  return <>{parsedError === undefined ? '' : textContent}</>;
 }

@@ -6,7 +6,7 @@ const majorApi = {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         axios
-          .get('http://127.0.0.1:44444/api/majors', {
+          .get('http://localhost:44444/api/majors', {
             params: {
               t_faculty_id: t_faculty_id,
             },

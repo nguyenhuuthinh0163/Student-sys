@@ -26,7 +26,6 @@ import ErrorText from '../Common/ErrorText';
 interface EditStudentModalProps {
   openEditModal: boolean;
   setOpenEditModal: (property: boolean) => void;
-  // setListStudent: (property: Student[]) => void;
   faculties?: Faculty[];
 }
 

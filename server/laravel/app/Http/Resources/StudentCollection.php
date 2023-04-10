@@ -14,7 +14,6 @@ class StudentCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return [
-            't_student_id' =
+        return [];
     }
 }

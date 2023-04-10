@@ -11,4 +11,4 @@ COPY ./tsconfig.json /app/
 COPY ./yarn.lock /app/
 
 RUN yarn install
-ENTRYPOINT ["yarn", "run"]
+ENTRYPOINT ["yarn", "start"]

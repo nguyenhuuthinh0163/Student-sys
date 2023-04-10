@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\V1\AuthController;
 use App\Http\Controllers\FacultyController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\MajorController;
@@ -17,20 +18,31 @@ use App\Http\Controllers\MajorController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(['prefix' => 'v1'], function () {
+    Route::post('register', [AuthController::class, 'createUser']);
+    Route::post('login', [AuthController::class, 'login']);
+
+    Route::middleware(['auth:sanctum'])->group(function () {
+        Route::post('logout', [AuthController::class, 'logout']);
+        Route::get('profile', [AuthController::class, 'profile']);
+    });
 });
 
-// Route::get('students', 'App\Http\Controllers\StudentController@list');
-// Route::get('majors', 'App\Http\Controllers\MajorController@list');
-// Route::get('faculties', 'App\Http\Controllers\FacultyController@list');
-Route::resources([
-    'students' => StudentController::class,
-    'faculties' => FacultyController::class,
-    'majors' => MajorController::class,
-]);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::resources([
+        'students' => StudentController::class,
+        'faculties' => FacultyController::class,
+        'majors' => MajorController::class,
+    ]);
+    Route::delete('students', [StudentController::class, 'destroy']);
+});
+Route::get('/clear', function() {
 
-Route::delete('students', [StudentController::class, 'destroy']);
-// Route::resource('photos', PhotoController::class)->except([
-//     'create', 'store', 'update', 'destroy'
-// ]);
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+    Artisan::call('view:clear');
+ 
+    return "Cleared!";
+ 
+ });

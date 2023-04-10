@@ -2,7 +2,6 @@ import { PayloadAction } from '@reduxjs/toolkit';
 import studentApi from '../api/studentApi';
 import ListStudentId from '../Interfaces/ListStudentId';
 import Student from '../Interfaces/Student';
-
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
 export const getStudents = createAsyncThunk(

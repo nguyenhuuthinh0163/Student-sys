@@ -121,19 +121,21 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `t_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `t_user` (
-  `t_user_id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `t_user_name` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `t_user_email` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `t_user_password` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `t_user_permission` tinyint(4) DEFAULT '0',
+CREATE TABLE `user` (
+  `user_id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(1000) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `access_token` tinytext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `permission` tinyint(4) DEFAULT '0',
   `deleted_at` datetime DEFAULT NULL,
   `created_id` int(11) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_id` int(11) NOT NULL,
   `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`t_user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`user_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

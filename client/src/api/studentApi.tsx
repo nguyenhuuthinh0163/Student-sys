@@ -7,7 +7,7 @@ const studentApi = {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         axios
-          .get('http://127.0.0.1:44444/api/students')
+          .get('http://localhost:44444/api/students')
           .then((res) => {
             const result = res.data.map(function (item: Student) {
               return {
@@ -35,7 +35,7 @@ const studentApi = {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         axios
-          .post('http://127.0.0.1:44444/api/students', {
+          .post('http://localhost:44444/api/students', {
             t_student_name: data.t_student_name,
             t_major_id: data.t_major_id,
             t_faculty_id: data.t_faculty_id,
@@ -57,7 +57,7 @@ const studentApi = {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         axios
-          .put('http://127.0.0.1:44444/api/students/' + data.t_student_id, {
+          .put('http://localhost:44444/api/students/' + data.t_student_id, {
             t_student_name: data.t_student_name,
             t_major_id: data.t_major_id,
             t_faculty_id: data.t_faculty_id,
@@ -80,7 +80,7 @@ const studentApi = {
       setTimeout(() => {
         if (Array.isArray(t_studennt_ids)) {
           axios
-            .delete('http://127.0.0.1:44444/api/students', {
+            .delete('http://localhost:44444/api/students', {
               data: {
                 t_studennt_ids: t_studennt_ids,
               },
@@ -96,5 +96,4 @@ const studentApi = {
     });
   },
 };
-
 export default studentApi;

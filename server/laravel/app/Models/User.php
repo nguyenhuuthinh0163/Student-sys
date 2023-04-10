@@ -30,7 +30,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'password',
-        'remember_token',
+        'access_token',
     ];
 
     /**
@@ -39,6 +39,9 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'created_at' => 'datetime',
     ];
+
+    public $table = "user";
+    protected $primaryKey = 'user_id';
 }
