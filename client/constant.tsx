@@ -1,0 +1,11 @@
+export const API_URL = 'http://localhost:44444/api/';
+export const REG_SUFFIX = 'v1/register';
+export const LOG_SUFFIX = 'v1/login';
+export const OUT_SUFFIX = 'v1/logout';
+export const STU_SUFFIX = '/students';
+export const MAJ_SUFFIX = '/majors';
+export const FAC_SUFFIX = '/faculties';
+export const GET = 'GET';
+export const POST = 'POST';
+export const PUT = 'PUT';
+export const DELETE = 'DELETE';

@@ -38,8 +38,7 @@ class AuthResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'token' => $this->createToken("api")->plainTextToken,
-            'token_type' => 'Bearer',
+            $this->createToken("api")->plainTextToken
         ];
     }
 }

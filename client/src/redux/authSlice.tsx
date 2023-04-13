@@ -1,28 +1,28 @@
-import authApi from '../api/authApi';
+import { LOG_SUFFIX, OUT_SUFFIX, POST, REG_SUFFIX } from '../../constant';
 import api from '../api/request';
 import User from '../Interfaces/User';
 
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
 export const postRegister = createAsyncThunk('user/postRegister', async (user: User) => {
-  const result = await authApi.postRegister(user);
+  const result = await api.request(REG_SUFFIX, POST, user);
   return result;
 });
 
 export const postLogin = createAsyncThunk('user/postLogin', async (user: User) => {
-  const result = await api.request(process.env.REACT_APP_LOG_SUFFIX, process.env.REACT_APP_POST, user)
+  const result = await api.request(LOG_SUFFIX, POST, user);
   return result;
 });
 
 export const postLogout = createAsyncThunk('user/postLogout', async () => {
-  const result = await authApi.postLogout();
+  const result = await api.request(OUT_SUFFIX, POST);
   return result;
 });
 
-export const getProfile = createAsyncThunk('user/getProfile', async (email: string) => {
-  const result = await authApi.getProfile(email);
-  return result;
-});
+// export const getProfile = createAsyncThunk('user/getProfile', async (email: string) => {
+//   const result = await api.request();
+//   return result;
+// });
 
 const initialState = {
   loading: false,
@@ -49,6 +49,7 @@ const authSlice = createSlice({
       state.loading = false;
       state.success = true;
       state.accessToken = payload;
+      localStorage.setItem('accessToken', payload);
     },
     [postRegister.rejected]: (state: { loading: boolean; error: string }, payload: any) => {
       state.loading = false;
@@ -67,6 +68,7 @@ const authSlice = createSlice({
       state.loading = false;
       state.success = true;
       state.accessToken = payload;
+      localStorage.setItem('accessToken', payload);
     },
     [postLogin.rejected]: (state: { loading: boolean; error: string }, payload: any) => {
       state.loading = false;
@@ -85,7 +87,9 @@ const authSlice = createSlice({
   },
 });
 const { reducer: authReducer } = authSlice;
-export const selectAccessToken = (state: { accessToken: string }) =>
-  state.accessToken;
+export const selectAccessToken = (state: { accessToken: string }) => {
+  console.log(state.accessToken);
+  return state.accessToken;
+};
 
 export default authReducer;
