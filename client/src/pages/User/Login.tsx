@@ -7,17 +7,14 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Register from './Register';
 import { postLogin } from '../../redux/authSlice';
+import { useDispatch } from 'react-redux';
 
-export default function Login() {
+function Login() {
+  const dispatch = useDispatch();
   const handleSubmit = (event: any) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
     dispatch(
       postLogin({
         email: data.get('email'),
@@ -84,6 +81,5 @@ export default function Login() {
     </Container>
   );
 }
-function dispatch(arg0: any) {
-  throw new Error('Function not implemented.');
-}
+
+export default Login;

@@ -2,9 +2,15 @@ import { configureStore } from '@reduxjs/toolkit';
 import facultyReducer from './facultySlice';
 import majorReducer from './majorSlice';
 import studentReducer from './studentSlice';
+import authReducer from './authSlice';
 
 export const store = configureStore({
-  reducer: { students: studentReducer, majors: majorReducer, faculties: facultyReducer },
+  reducer: {
+    students: studentReducer,
+    majors: majorReducer,
+    faculties: facultyReducer,
+    auth: authReducer,
+  },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

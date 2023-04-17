@@ -1,25 +1,39 @@
-import { LOG_SUFFIX, OUT_SUFFIX, POST, REG_SUFFIX } from '../../constant';
 import api from '../api/request';
 import User from '../Interfaces/User';
-
+import { LOG_SUFFIX, OUT_SUFFIX, POST, REG_SUFFIX } from '../Constant/env';
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
-export const postRegister = createAsyncThunk('user/postRegister', async (user: User) => {
-  const result = await api.request(REG_SUFFIX, POST, user);
-  return result;
+export const postRegister = createAsyncThunk(
+  'auth/postRegister',
+  async (user: User, thunkAPI: any) => {
+    try {
+      const result = await api.request(REG_SUFFIX, POST, user);
+      return result;
+    } catch (error: any) {
+      return thunkAPI.rejectWithValue(error.data);
+    }
+  }
+);
+
+export const postLogin = createAsyncThunk('auth/postLogin', async (user: User, thunkAPI: any) => {
+  try {
+    const result = await api.request(LOG_SUFFIX, POST, user);
+    return result;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.data);
+  }
 });
 
-export const postLogin = createAsyncThunk('user/postLogin', async (user: User) => {
-  const result = await api.request(LOG_SUFFIX, POST, user);
-  return result;
+export const postLogout = createAsyncThunk('auth/postLogout', async (param: any, thunkAPI: any) => {
+  try {
+    const result = await api.request(OUT_SUFFIX, POST);
+    return result;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.data);
+  }
 });
 
-export const postLogout = createAsyncThunk('user/postLogout', async () => {
-  const result = await api.request(OUT_SUFFIX, POST);
-  return result;
-});
-
-// export const getProfile = createAsyncThunk('user/getProfile', async (email: string) => {
+// export const getProfile = createAsyncThunk('auth/getProfile', async (email: string) => {
 //   const result = await api.request();
 //   return result;
 // });
@@ -87,9 +101,8 @@ const authSlice = createSlice({
   },
 });
 const { reducer: authReducer } = authSlice;
-export const selectAccessToken = (state: { accessToken: string }) => {
-  console.log(state.accessToken);
-  return state.accessToken;
+export const selectAccessToken = (state: { auth: { accessToken: string } }) => {
+  return state.auth.accessToken ?? localStorage.getItem('accessToken');
 };
 
 export default authReducer;
