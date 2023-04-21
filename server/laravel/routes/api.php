@@ -36,13 +36,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
     ]);
     Route::delete('students', [StudentController::class, 'destroy']);
 });
-Route::get('/clear', function() {
+Route::get('/clear', function () {
 
     Artisan::call('cache:clear');
     Artisan::call('config:clear');
     Artisan::call('config:cache');
     Artisan::call('view:clear');
- 
+
     return "Cleared!";
- 
- });
+});
