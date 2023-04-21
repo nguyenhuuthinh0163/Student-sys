@@ -1,27 +1,25 @@
 import { PayloadAction } from '@reduxjs/toolkit';
-import studentApi from '../api/studentApi';
 import ListStudentId from '../Interfaces/ListStudentId';
 import Student from '../Interfaces/Student';
+import api from '../api/request';
+import { DELETE, GET, POST, PUT, STU_SUFFIX } from '../Constant/env';
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
-export const getStudents = createAsyncThunk(
-  'student/getStudents',
-  async (param: any, thunkAPI: any) => {
-    try {
-      const result = await studentApi.getStudents();
-      return result;
-    } catch (error: any) {
-      return thunkAPI.rejectWithValue(error.data);
-    }
+export const getStudents = createAsyncThunk('student/getStudents', async (thunkAPI: any) => {
+  try {
+    const result = await api.request(STU_SUFFIX, GET);
+    return result;
+  } catch (error: any) {
+    return thunkAPI.rejectWithValue(error.data);
   }
-);
+});
 
 export const postStudent = createAsyncThunk(
   'student/postStudent',
   async (data: Student, thunkAPI: any) => {
     try {
-      const student = await studentApi.postStudent(data);
-      return student;
+      const result = await api.request(STU_SUFFIX, POST, data);
+      return result;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.data);
     }
@@ -32,7 +30,7 @@ export const putStudent = createAsyncThunk(
   'student/putStudent',
   async (data: Student, thunkAPI: any) => {
     try {
-      const result = await studentApi.putStudent(data);
+      const result = await api.request(STU_SUFFIX, PUT, data);
       return result;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.data);
@@ -44,7 +42,7 @@ export const deleteStudent = createAsyncThunk(
   'student/putStudent',
   async (t_studennt_ids: ListStudentId, thunkAPI: any) => {
     try {
-      const result = await studentApi.deleteStudent(t_studennt_ids);
+      const result = await api.request(STU_SUFFIX, DELETE, { t_studennt_ids: t_studennt_ids });
       return result;
     } catch (error: any) {
       return thunkAPI.rejectWithValue(error.data);

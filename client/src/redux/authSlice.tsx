@@ -1,6 +1,7 @@
 import api from '../api/request';
 import User from '../Interfaces/User';
 import { LOG_SUFFIX, OUT_SUFFIX, POST, REG_SUFFIX } from '../Constant/env';
+import ErrorMessages from '../Interfaces/ErrorMessages';
 const { createSlice, createAsyncThunk } = require('@reduxjs/toolkit');
 
 export const postRegister = createAsyncThunk(
@@ -42,7 +43,8 @@ const initialState = {
   loading: false,
   userInfo: null,
   accessToken: null,
-  error: null,
+  errors: {},
+  commonError: '',
   success: false,
 };
 
@@ -52,49 +54,53 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: {
     // Register user
-    [postRegister.pending]: (state: { loading: boolean; error: any }) => {
+    [postRegister.pending]: (state: { loading: boolean; }) => {
       state.loading = true;
-      state.error = null;
     },
     [postRegister.fulfilled]: (
-      state: { loading: boolean; success: boolean; accessToken: string },
-      payload: any
+      state: { loading: boolean, errors: ErrorMessages, commonError: string, success: boolean, accessToken: string },
+      action: { payload: any }
     ) => {
       state.loading = false;
       state.success = true;
-      state.accessToken = payload;
-      localStorage.setItem('accessToken', payload);
+      state.accessToken = action.payload;
+      state.errors = {};
+      state.commonError = '';
+      localStorage.setItem('accessToken', action.payload);
     },
-    [postRegister.rejected]: (state: { loading: boolean; error: string }, payload: any) => {
+    [postRegister.rejected]: (state: { loading: boolean, commonError: string, errors: ErrorMessages }, action: { payload: any }) => {
       state.loading = false;
-      state.error = payload;
+      state.errors = action.payload.errors;
+      state.commonError = action.payload.message;
+      state.errors = action.payload.errors;
     },
 
     // Login
-    [postLogin.pending]: (state: { loading: boolean; error: any }) => {
+    [postLogin.pending]: (state: { loading: boolean }) => {
       state.loading = true;
-      state.error = null;
     },
     [postLogin.fulfilled]: (
-      state: { loading: boolean; success: boolean; accessToken: string },
-      payload: any
+      state: { loading: boolean, commonError: string, errors: ErrorMessages, success: boolean, accessToken: string },
+      action: { payload: any }
     ) => {
       state.loading = false;
       state.success = true;
-      state.accessToken = payload;
-      localStorage.setItem('accessToken', payload);
+      state.accessToken = action.payload;
+      state.errors = {};
+      state.commonError = '';
+      localStorage.setItem('accessToken', action.payload);
     },
-    [postLogin.rejected]: (state: { loading: boolean; error: string }, payload: any) => {
+    [postLogin.rejected]: (state: { loading: boolean, commonError: string, errors: ErrorMessages }, action: { payload: any }) => {
       state.loading = false;
-      state.error = payload;
+      state.commonError = action.payload.message;
+      state.errors = action.payload.errors;
     },
 
     // Logout
-    [postLogout.pending]: (state: { loading: boolean; error: any }) => {
+    [postLogout.pending]: (state: { loading: boolean }) => {
       state.loading = true;
-      state.error = null;
     },
-    [postLogout.fulfilled]: (state: { loading: boolean; success: boolean }) => {
+    [postLogout.fulfilled]: (state: { loading: boolean, success: boolean }) => {
       state.loading = false;
       state.success = true;
     },
@@ -104,5 +110,13 @@ const { reducer: authReducer } = authSlice;
 export const selectAccessToken = (state: { auth: { accessToken: string } }) => {
   return state.auth.accessToken ?? localStorage.getItem('accessToken');
 };
+export const selectCommonError = (state: { auth: { commonError: string } }) => {
+  return state.auth.commonError;
+};
+
+export const selectErrors = (state: { auth: { errors: ErrorMessages } }) => {
+  return state.auth.errors;
+};
+
 
 export default authReducer;

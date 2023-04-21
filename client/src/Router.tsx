@@ -4,6 +4,7 @@ import App from './App';
 import Login from './pages/User/Login';
 import { RouterProvider, createBrowserRouter, redirect } from 'react-router-dom';
 import Register from './pages/User/Register';
+import { useEffect } from 'react';
 
 export default function Router() {
   const accessToken = useSelector(selectAccessToken);
@@ -12,9 +13,10 @@ export default function Router() {
       path: '/',
       element: <App />,
       loader: async () => {
-        if (!accessToken) {
+        if (accessToken === null) {
           throw redirect('/login');
         }
+        return accessToken;
       },
     },
     {

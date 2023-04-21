@@ -1,16 +1,19 @@
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { postLogin } from '../../redux/authSlice';
-import { useDispatch } from 'react-redux';
+import { postLogin, selectCommonError, selectErrors } from '../../redux/authSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import CommonAlert from '../Common/CommonAlert';
+import { getErrorFlag } from '../../Utils/FormHelper';
+import ErrorText from '../Common/ErrorText';
 
 function Login() {
+  const commonError = useSelector(selectCommonError);
+  const errors = useSelector(selectErrors);
   const dispatch = useDispatch();
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -38,6 +41,8 @@ function Login() {
         </Typography>
         <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
           <TextField
+            error={getErrorFlag(errors?.email)}
+            helperText={<ErrorText textContent={errors?.email} />}
             margin="normal"
             required
             fullWidth
@@ -48,6 +53,8 @@ function Login() {
             autoFocus
           />
           <TextField
+            error={getErrorFlag(errors?.password)}
+            helperText={<ErrorText textContent={errors?.password} />}
             margin="normal"
             required
             fullWidth
@@ -57,10 +64,7 @@ function Login() {
             id="password"
             autoComplete="current-password"
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
+          <CommonAlert commonError={commonError} />
           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             Sign In
           </Button>
