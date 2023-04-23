@@ -14,8 +14,9 @@ import ErrorText from '../Common/ErrorText';
 function Login() {
   const commonError = useSelector(selectCommonError);
   const errors = useSelector(selectErrors);
+
   const dispatch = useDispatch();
-  const handleSubmit = (event: any) => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     dispatch(

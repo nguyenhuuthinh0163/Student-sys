@@ -54,11 +54,17 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: {
     // Register user
-    [postRegister.pending]: (state: { loading: boolean; }) => {
+    [postRegister.pending]: (state: { loading: boolean }) => {
       state.loading = true;
     },
     [postRegister.fulfilled]: (
-      state: { loading: boolean, errors: ErrorMessages, commonError: string, success: boolean, accessToken: string },
+      state: {
+        loading: boolean;
+        errors: ErrorMessages;
+        commonError: string;
+        success: boolean;
+        accessToken: string;
+      },
       action: { payload: any }
     ) => {
       state.loading = false;
@@ -68,7 +74,10 @@ const authSlice = createSlice({
       state.commonError = '';
       localStorage.setItem('accessToken', action.payload);
     },
-    [postRegister.rejected]: (state: { loading: boolean, commonError: string, errors: ErrorMessages }, action: { payload: any }) => {
+    [postRegister.rejected]: (
+      state: { loading: boolean; commonError: string; errors: ErrorMessages },
+      action: { payload: any }
+    ) => {
       state.loading = false;
       state.errors = action.payload.errors;
       state.commonError = action.payload.message;
@@ -80,7 +89,13 @@ const authSlice = createSlice({
       state.loading = true;
     },
     [postLogin.fulfilled]: (
-      state: { loading: boolean, commonError: string, errors: ErrorMessages, success: boolean, accessToken: string },
+      state: {
+        loading: boolean;
+        commonError: string;
+        errors: ErrorMessages;
+        success: boolean;
+        accessToken: string;
+      },
       action: { payload: any }
     ) => {
       state.loading = false;
@@ -90,7 +105,10 @@ const authSlice = createSlice({
       state.commonError = '';
       localStorage.setItem('accessToken', action.payload);
     },
-    [postLogin.rejected]: (state: { loading: boolean, commonError: string, errors: ErrorMessages }, action: { payload: any }) => {
+    [postLogin.rejected]: (
+      state: { loading: boolean; commonError: string; errors: ErrorMessages },
+      action: { payload: any }
+    ) => {
       state.loading = false;
       state.commonError = action.payload.message;
       state.errors = action.payload.errors;
@@ -100,7 +118,7 @@ const authSlice = createSlice({
     [postLogout.pending]: (state: { loading: boolean }) => {
       state.loading = true;
     },
-    [postLogout.fulfilled]: (state: { loading: boolean, success: boolean }) => {
+    [postLogout.fulfilled]: (state: { loading: boolean; success: boolean }) => {
       state.loading = false;
       state.success = true;
     },
@@ -117,6 +135,5 @@ export const selectCommonError = (state: { auth: { commonError: string } }) => {
 export const selectErrors = (state: { auth: { errors: ErrorMessages } }) => {
   return state.auth.errors;
 };
-
 
 export default authReducer;

@@ -12,18 +12,29 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { getErrorFlag } from '../../Utils/FormHelper';
+import ErrorText from '../Common/ErrorText';
+import { useDispatch, useSelector } from 'react-redux';
+import { postRegister, selectCommonError, selectErrors } from '../../redux/authSlice';
+import CommonAlert from '../Common/CommonAlert';
 
 const theme = createTheme();
 
 function Register() {
+  const dispatch = useDispatch();
+  const commonError = useSelector(selectCommonError);
+  const errors = useSelector(selectErrors);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      name: data.get('name'),
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    dispatch(
+      postRegister({
+        name: data.get('name'),
+        email: data.get('email'),
+        password: data.get('password'),
+      })
+    );
   };
 
   return (
@@ -50,6 +61,8 @@ function Register() {
                 <TextField
                   required
                   fullWidth
+                  error={getErrorFlag(errors?.name)}
+                  helperText={<ErrorText textContent={errors?.name} />}
                   id="name"
                   label="Name"
                   name="name"
@@ -60,6 +73,8 @@ function Register() {
                 <TextField
                   required
                   fullWidth
+                  error={getErrorFlag(errors?.email)}
+                  helperText={<ErrorText textContent={errors?.email} />}
                   id="email"
                   label="Email Address"
                   name="email"
@@ -70,6 +85,8 @@ function Register() {
                 <TextField
                   required
                   fullWidth
+                  error={getErrorFlag(errors?.password)}
+                  helperText={<ErrorText textContent={errors?.password} />}
                   name="password"
                   label="Password"
                   type="password"
@@ -77,13 +94,8 @@ function Register() {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
-                <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
-                  label="I want to receive inspiration, marketing promotions and updates via email."
-                />
-              </Grid>
             </Grid>
+            <CommonAlert commonError={commonError} />
             <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign Up
             </Button>
